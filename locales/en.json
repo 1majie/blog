@@ -1,0 +1,34 @@
+{
+  "title": "One code World",
+  "menu": {
+    "home": "technology",
+    "download": "download",
+    "software": "software",
+    "vps":"vps",
+    "proxy": "proxy",
+    "money": "money"
+  },
+  "theme": {
+    "light": "light",
+    "dark": "dark",
+    "system": "system"
+  },
+  "lang": {
+    "china": "Chinese",
+    "english": "English"
+  },
+  "company": "One code World",
+  "main": {
+    "login": "Sign In",
+    "help": "User Tutorial",
+    "rule": "standard",
+    "list": [
+      
+    ]
+  },
+  "build": "building...",
+  "page":{
+    "before":"before",
+    "next":"next"
+  }
+}

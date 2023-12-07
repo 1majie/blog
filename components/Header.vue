@@ -39,7 +39,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="navbar h-14 bg-base-100 border border-base-300 fixed top-0 left-0 right-0 z-50 font-bold text-base-content"
+  <div class="navbar  h-14 bg-base-100 border border-base-300 fixed top-0 left-0 right-0 z-50 font-bold text-base-content"
     :class="{
       'bg-base-300': colorMode.value === 'dark',
       'bg-base-100': colorMode.value === 'light',

@@ -1,10 +1,18 @@
+<!--
+ * @Author: freedom 957420317@qq.com
+ * @Date: 2023-12-06 20:41:55
+ * @LastEditors: freedom 957420317@qq.com
+ * @LastEditTime: 2023-12-07 08:38:04
+ * @FilePath: \blog_before_vue3_nuxt\components\Build.vue
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
 <script setup>
 import utils from '~/utils/util';
 
 import { ref, nextTick } from 'vue';
 const baseUrl = utils.getBaseUrl();
 let colorMode = ref({});
-let conetent = ref({});
+let conetent = ref();
 let id = 1
 const route = useRoute()
 if (route.query.id) {
@@ -23,73 +31,152 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div class="flex flex-col h-screen">
-    <!-- 第一行 -->
-    <div class="flex items-center justify-between bg-base-100 mt-24">
-      <div class=" text-right flex-none w-2/6"></div>
-      <div class=" rounded p-4" :class="{
-        'bg-base-300': colorMode.value === 'dark',
-        'bg-base-100': colorMode.value === 'light',
-      }">
-        <h1 class="text-3xl font-bold text-center">{{ conetent.title }}</h1>
-        <div class="overflow-x-auto mt-4 mb-4">
-          <table class="table border-t">
-            <tbody>
-              <!-- row 2 -->
-              <tr>
-                <td class="text-left">
-                  <Icon name="ep:clock" size="26" color="black" class="mr-2" />{{ utils.dataFliter(conetent.createTime) }}
-                </td>
-                <td class="text-center">
-                  <Icon name="ep:view" size="26" color="black" class="mr-2" />{{ conetent.viemNum }}
-                </td>
-                <td class="text-right">
-                  <Icon name="ep:user" size="26" color="black" class="mr-2" />一码界
-                </td>
-              </tr>
-            </tbody>
-          </table>
+  <div class=" w-full mx-auto mt-20 mb-20">
+    <!-- 第一层div占屏幕宽度的80% -->
+    <div class="w-full bg-gray-300">
+      <!-- 第二层4个div每行一个div -->
+      <div class="flex flex-col">
+        <div class="w-full bg-yellow-300">
+          <!-- 第三层：5个div，每个div占一列宽度为10% 10% 60% 10% 10% -->
+          <div class="flex">
+            <div class=" bg-red-300" style="width:15%">
+              1
+            </div>
+            <div class=" bg-green-300" style="width:15%">
+              <ul class="menu bg-base-200">
+                <li>
+                  <h2 class="menu-title">Title</h2>
+                  <ul>
+                    <li><a>Item 1</a></li>
+                    <li><a>Item 2</a></li>
+                    <li><a>Item 3</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+            <div class=" bg-base-100  p-2" style="width:40%">
+              <h1 v-if="conetent" class="text-3xl font-bold text-center">{{ conetent.title }}</h1>
+              <div v-if="conetent" class="overflow-x-auto mt-4 mb-4">
+                <table class="table border-t">
+                  <tbody>
+                    <!-- row 2 -->
+                    <tr>
+                      <td class="text-left">
+                        <Icon name="ep:clock" size="20" color="black" class="mr-2" />{{
+                          utils.dataFliter(conetent.createTime) }}
+                      </td>
+                      <td class="text-center">
+                        <Icon name="ep:view" size="20" color="black" class="mr-2" />{{ conetent.viemNum }}
+                      </td>
+                      <td class="text-right">
+                        <Icon name="ep:user" size="20" color="black" class="mr-2" />一码界
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div v-if="conetent" class=" space-y-2" v-html="conetent.content">
+              </div>
+              <div class="bg-base-content/10 mx-1 my-10 h-px"></div>
+              <div class="h-32 card bg-base-200 rounded-box  space-y-2 p-1">
+                <p>文章作者: blinkfox</p>
+                <p>文章链接: https://blinkfox.github.io/2018/11/24/ruan-jian-she-ji/ruan-jian-cheng-xu-she-ji-yuan-ze/</p>
+                <p>版权声明: 本博客所有文章除特別声明外，均采用 CC BY 4.0 许可协议。转载请注明来源 blinkfox !</p>
+              </div>
+            </div>
+            <div class=" bg-purple-300" style="width:15%">
+              <ul class="menu bg-base-200">
+                <li><a>Item 1</a></li>
+                <li>
+                  <details open>
+                    <summary>Parent</summary>
+                    <ul>
+                      <li><a>Submenu 1</a></li>
+                      <li><a>Submenu 2</a></li>
+                      <li>
+                        <details open>
+                          <summary>Parent</summary>
+                          <ul>
+                            <li><a>Submenu 1</a></li>
+                            <li><a>Submenu 2</a></li>
+                          </ul>
+                        </details>
+                      </li>
+                    </ul>
+                  </details>
+                </li>
+                <li><a>Item 3</a></li>
+              </ul>
+            </div>
+            <div class=" bg-pink-300" style="width:15%">
+              5
+            </div>
+          </div>
         </div>
-        <div v-if="conetent.content" class=" space-y-2" v-html="conetent.content">
+
+        <div class="w-full bg-purple-500">
+          <!-- 第三层：5个div，每个div占一列宽度为10% 10% 60% 10% 10% -->
+          <div class="flex">
+            <div class=" bg-red-500" style="width:15%">
+              1
+            </div>
+            <div class=" bg-green-500" style="width:15%">
+              2
+            </div>
+            <div class=" bg-blue-500" style="width:40%">
+              3
+            </div>
+            <div class=" bg-purple-500" style="width:15%">
+              4
+            </div>
+            <div class=" bg-pink-500" style="width:15%">
+              5
+            </div>
+          </div>
         </div>
-        <div class="overflow-x-auto mt-4 mb-4">
-          <table class="table border-t">
-            <tbody>
-              <!-- row 2 -->
-              <tr>
-                <td class="text-left">
-                  <Icon name="ep:clock" size="26" color="black" class="mr-2" />{{ utils.dataFliter(conetent.createTime) }}
-                </td>
-                <td class="text-center">
-                  <Icon name="ep:view" size="26" color="black" class="mr-2" />{{ conetent.viemNum }}
-                </td>
-                <td class="text-right">
-                  <Icon name="ep:user" size="26" color="black" class="mr-2" />一码界
-                </td>
-              </tr>
-            </tbody>
-          </table>
+
+        <div class="w-full bg-green-700">
+          <!-- 第三层：5个div，每个div占一列宽度为10% 10% 60% 10% 10% -->
+          <div class="flex">
+            <div class=" bg-red-700" style="width:15%">
+              1
+            </div>
+            <div class=" bg-green-700" style="width:15%">
+              2
+            </div>
+            <div class=" bg-blue-700" style="width:40%">
+              3
+            </div>
+            <div class=" bg-purple-700" style="width:15%">
+              4
+            </div>
+            <div class=" bg-pink-700" style="width:15%">
+              5
+            </div>
+          </div>
+        </div>
+
+        <div class="w-full bg-blue-500">
+          <!-- 第三层：5个div，每个div占一列宽度为10% 10% 60% 10% 10% -->
+          <div class="flex">
+            <div class=" bg-red-500" style="width:15%">
+              1
+            </div>
+            <div class=" bg-green-500" style="width:15%">
+              2
+            </div>
+            <div class=" bg-blue-500" style="width:40%">
+              3
+            </div>
+            <div class=" bg-purple-500" style="width:15%">
+              4
+            </div>
+            <div class=" bg-pink-500" style="width:15%">
+              5
+            </div>
+          </div>
         </div>
       </div>
-
-      <div class=" text-left flex-none w-2/6"></div>
-
-    </div>
-
-    <!-- 第二行 -->
-    <div class="flex items-center justify-between bg-base-100  pb-20">
-      <div class=" text-right flex-none w-2/6"></div>
-      <div class=" font-ligh  rounded p-4" :class="{
-        'bg-base-300': colorMode.value === 'dark',
-        'bg-base-100': colorMode.value === 'light',
-      }">
-        <p>本博客上的原创作品采用 知识共享署名 4.0 国际许可协议（CC BY 4.0） 进行许可。</p>
-        <p>在转载或使用本博客上的原创作品时，您需要遵循以下署名要求：</p>
-        <p>署名方式： 在使用作品的可见位置提供明确的署名，包括作者的姓名（一码界）。</p>
-        <p>链接方式： 提供指向原始作品的链接，以便读者能够获取更多信息。</p>
-        <p>说明修改： 如果您对作品进行了修改，提供说明，明确修改的内容。</p>
-      </div>
-      <div class=" text-left flex-none w-2/6"></div>
     </div>
   </div>
 </template>

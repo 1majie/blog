@@ -2,7 +2,7 @@
  * @Author: freedom 957420317@qq.com
  * @Date: 2023-12-06 20:41:55
  * @LastEditors: freedom 957420317@qq.com
- * @LastEditTime: 2023-12-08 08:08:40
+ * @LastEditTime: 2023-12-08 21:54:08
  * @FilePath: \blog_before_vue3_nuxt\components\Build.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -17,10 +17,20 @@ let id = 1
 const route = useRoute()
 let url = ref("")
 let userName = ref("");
+
+// 获取文章id
 if (route.query.id) {
   id = route.query.id
 }
 
+// 设置浏览量
+const setView = async (id) => {
+  // 防止客户端执行时，直接返回null
+  await nextTick()
+  await useFetch(baseUrl + '/base/UpdateTblContentViewNum?ID=' + id)
+}
+
+// 获取文章内容
 const getTblContent = async (id) => {
   // 防止客户端执行时，直接返回null
   await nextTick()
@@ -28,23 +38,32 @@ const getTblContent = async (id) => {
   content.value = count.value.data.retblContent;
   getUserName(count.value.data.retblContent.authorId);
 }
+
+// 获取用户名称
 const getUserName = async (id) => {
   // 防止客户端执行时，直接返回null
   await nextTick()
   let { data: username } = await useFetch(baseUrl + '/base/GetUserName?id=' + id)
   userName.value = username.value.data.userName;
 }
+
 getTblContent(id);
+
 onMounted(async () => {
   await nextTick()
+  setView(id);
   colorMode.value = useColorMode();
-  console.log(content.value)
   Prism.highlightAll();
+  // 获取文章地址
   url = window.location.href;
 })
+
 onUpdated(() => {
+  // 代码高亮
   Prism.highlightAll(); //修改内容后重新渲染
 });
+
+// 修改代码复制文字为中文
 useHead({
   bodyAttrs: {
     "data-prismjs-copy": "复制",
@@ -55,7 +74,7 @@ useHead({
 
 </script>
 <template>
-  <div class=" w-full mx-auto mt-20 mb-20">
+  <div class=" w-full mx-auto mt-20 mb-20 font-sans ">
     <!-- 第一层div占屏幕宽度的80% -->
     <div class="w-full bg-gray-300">
       <!-- 第二层4个div每行一个div -->
@@ -79,14 +98,16 @@ useHead({
               </ul>
             </div>
             <div class=" bg-base-100  p-6" style="width:40%">
-              <h1 v-if="content" class="text-3xl font-bold text-center">{{ content.title }}</h1>
+              <NuxtLink :to="url">
+                <h1 v-if="content" class="text-3xl font-bold text-center">{{ content.title }}</h1>
+              </NuxtLink>
               <div v-if="content" class="overflow-x-auto mt-4 mb-4">
                 <hr class="mt-4 mb-4 " />
                 <div class="container mx-auto">
                   <ul class="flex flex-wrap">
                     <li class="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 xl:w-1/3">
                       <!-- 列1的内容 -->
-                      <div class="">
+                      <div class="flex items-center">
                         <p>
                           <Icon name="ic:baseline-event-available" size="20" color="black" />发布时间:<span class="ml-2">{{
                             utils.dataFliter(content.createTime) }}</span>
@@ -95,17 +116,20 @@ useHead({
                     </li>
                     <li class="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 xl:w-1/3 ">
                       <!-- 列2的内容 -->
-                      <div class=" ">
+                      <div class="flex items-center ">
                         <p>
                           <Icon name="ic:baseline-preview" size="20" color="black" />阅读次数:<span class="ml-2">{{
-                            content.viemNum }}</span>
+                            content.viewNum }}</span>
                         </p>
                       </div>
                     </li>
                     <li class="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 xl:w-1/3 ">
                       <!-- 列3的内容 -->
-                      <div class="">
-                        <p>第三列</p>
+                      <div class="flex items-center">
+                        <p>
+                          <Icon name="ic:baseline-article" size="20" color="black" />文章类别:<span class="ml-2">{{
+                            content.type }}</span>
+                        </p>
                       </div>
                     </li>
                   </ul>
@@ -114,19 +138,23 @@ useHead({
               </div>
               <div v-if="content" class="editor-content-view" v-html="content.content">
               </div>
-              <hr class="mt-4 mb-4" />
-              <div class="h-32 card bg-base-200 rounded-box  space-y-2 p-6">
+              <hr v-if="content" class="mt-4 mb-4" />
+              <div v-if="content" class="h-32 card bg-base-200 rounded-box  space-y-2 p-6">
                 <p>
                   <Icon name="ep:user" size="20" color="bg-base-200" class="mr-2" />文章作者: {{ userName }}
                 </p>
                 <p>
                   <Icon name="ic:baseline-link" size="20" color="bg-base-200" class="mr-2" />文章链接:
-                  {{ url }}
+                  <NuxtLink :to="url">{{ url }}</NuxtLink>
                 </p>
                 <p>
                   <Icon name="ic:baseline-copyright" size="20" color="bg-base-200" class="mr-2" />版权声明: 本博客所有文章除特別声明外，均采用
                   CC BY 4.0 许可协议。转载请注明来源 {{ userName }} !
                 </p>
+              </div>
+              <div v-if="content" v-for="(item, index) in content.tagsView " :key="index"
+                class="badge badge-primary badge-md badge-outline mr-4 mt-4">
+                {{ item }}
               </div>
             </div>
             <div class=" bg-purple-300" style="width:15%">
@@ -279,7 +307,6 @@ h6 {
   /* 保留空格 */
 }
 
-
 .editor-content-view blockquote {
   border-left: 8px solid #d0e5f2;
   padding: 10px 10px;
@@ -309,20 +336,24 @@ h6 {
 }
 
 .editor-content-view th {
-  background-color: #f1f1f1;
+  background-color: #eee;
 }
 
-.editor-content-view ul,
+
 .editor-content-view ol {
   padding-left: 20px;
 }
 
-.editor-content-view ul>li {
+.editor-content-view ul {
+  padding-left: 20px;
+}
 
+.editor-content-view ul>li {
+  list-style-type: disc;
 }
 
 .editor-content-view ol>li {
-  
+  list-style-type: decimal;
 }
 
 .editor-content-view input[type="checkbox"] {

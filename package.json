@@ -19,12 +19,15 @@
     "daisyui": "^3.9.4",
     "nuxt": "^3.8.0",
     "nuxt-icon": "^0.6.5",
+    "vite-plugin-prismjs": "^0.0.8",
     "vue": "^3.3.7",
     "vue-router": "^4.2.5"
   },
   "dependencies": {
+    "@types/prismjs": "^1.26.3",
     "dayjs": "^1.11.10",
     "nuxi": "^3.9.1",
+    "prismjs": "^1.29.0",
     "vue-i18n": "^9.6.5"
   }
 }

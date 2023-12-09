@@ -1,3 +1,11 @@
+<!--
+ * @Author: freedom 957420317@qq.com
+ * @Date: 2023-12-06 20:41:55
+ * @LastEditors: freedom 957420317@qq.com
+ * @LastEditTime: 2023-12-09 07:50:27
+ * @FilePath: \blog_before_vue3_nuxt\components\List.vue
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
 <script setup>
 import utils from '~/utils/util';
 import { ref, nextTick } from 'vue';
@@ -6,7 +14,7 @@ let colorMode = ref({});
 let page = 1;
 let list = ref([]);
 let total = 0;
-let pageSize = 1;
+let pageSize = 10;
 let type = "技术"
 const route = useRoute()
 if (route.query.type) {
@@ -43,26 +51,48 @@ onMounted(() => {
   <div class="mt-16 lg:mb-32 sm:mb-44">
     <div class="flex flex-wrap justify-center gap-x-8 gap-y-8">
       <div v-for="(item) in list">
-        <div class="card card-compact w-96 h-80 bg-base-100 shadow-lg top-5 border border-base-300" :class="{
-          'bg-base-300': colorMode.value === 'dark',
-          'bg-base-100': colorMode.value === 'light',
-        }">
-          <div class="w-48 mx-auto mt-5">
-            <img :src="baseUrl + '/' + item.img" class="rounded h-48" :alt="item.title" />
+        <div class="card card-compact bg-base-100 shadow-lg top-5 border border-base-300"
+          style="height: 24rem; width:26rem" :class="{
+            'bg-base-300': colorMode.value === 'dark',
+            'bg-base-100': colorMode.value === 'light',
+          }">
+          <div class="mx-auto">
+            <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID } })"><img :src="baseUrl + '/' + item.img"
+                class="aspect-video w-full object-cover rounded" :alt="item.title" /></NuxtLink>
           </div>
-          <div class="mt-4">
-            <h1 class="font-bold text-xl display:block flex justify-center" :title="item.title">
-              <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID } })">{{ item.title }}</NuxtLink>
-            </h1>
+          <div class="mt-2 ml-2">
+            <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID } })">
+              <h3 class="font-bold" :title="item.title">
+                {{ item.title }}
+              </h3>
+            </NuxtLink>
           </div>
-          <div class="mt-4">
-            <span class="display:block flex justify-center" :title="item.summary">{{ item.summary }}
-            </span>
+          <div class="ml-2 h-20 mb-2">
+            <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID } })"><span class="line-clamp-2"
+                :title="item.summary">{{ item.summary }}
+              </span></NuxtLink>
+          </div>
+          <div class="flex items-center mb-2 ml-2 ">
+            <!-- 列1的内容 -->
+            <div class="flex items-center ">
+              <Icon name="ic:baseline-event-available" class="font-thin" color="black" />
+              <span class="ml-1 font-thin">{{ utils.dataFliter(item.createTime) }}</span>
+            </div>
+
+            <div class="flex items-center flex-grow">
+              <Icon name="ic:baseline-preview"  class="font-thin ml-4" color="black" />
+              <span class="ml-1 font-thin">{{ item.viewNum }}</span>
+            </div>
+
+            <div class="flex items-center ml-auto mr-2">
+              <Icon name="ic:baseline-article"  class="font-thin" color="black" />
+              <span class="ml-1 font-thin">{{ item.type }}</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="flex flex-wrap justify-center gap-x-8 gap-y-8 mt-16">
+    <div class="flex flex-wrap justify-center gap-x-8 gap-y-8 mt-10">
       <div class="join grid grid-cols-2" :class="{
         'bg-base-300': colorMode.value === 'dark',
         'bg-base-100': colorMode.value === 'light',

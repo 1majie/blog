@@ -2,7 +2,7 @@
  * @Author: freedom 957420317@qq.com
  * @Date: 2023-12-06 20:41:55
  * @LastEditors: freedom 957420317@qq.com
- * @LastEditTime: 2023-12-08 21:54:08
+ * @LastEditTime: 2023-12-09 08:22:55
  * @FilePath: \blog_before_vue3_nuxt\components\Build.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -97,39 +97,34 @@ useHead({
                 </li>
               </ul>
             </div>
-            <div class=" bg-base-100  p-6" style="width:40%">
+            <div class=" bg-base-100  p-4" style="width:40%">
               <NuxtLink :to="url">
                 <h1 v-if="content" class="text-3xl font-bold text-center">{{ content.title }}</h1>
               </NuxtLink>
-              <div v-if="content" class="overflow-x-auto mt-4 mb-4">
+              <div v-if="content" class="overflow-x-auto">
                 <hr class="mt-4 mb-4 " />
                 <div class="container mx-auto">
                   <ul class="flex flex-wrap">
                     <li class="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 xl:w-1/3">
                       <!-- 列1的内容 -->
                       <div class="flex items-center">
-                        <p>
-                          <Icon name="ic:baseline-event-available" size="20" color="black" />发布时间:<span class="ml-2">{{
+                        <Icon name="ic:baseline-event-available" size="20" color="black" /><span
+                          class="ml-1 font-thin">发布时间:{{
                             utils.dataFliter(content.createTime) }}</span>
-                        </p>
                       </div>
                     </li>
                     <li class="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 xl:w-1/3 ">
                       <!-- 列2的内容 -->
                       <div class="flex items-center ">
-                        <p>
-                          <Icon name="ic:baseline-preview" size="20" color="black" />阅读次数:<span class="ml-2">{{
-                            content.viewNum }}</span>
-                        </p>
+                        <Icon name="ic:baseline-preview" size="20" color="black" /><span class="ml-1 font-thin">阅读次数:{{
+                          content.viewNum }}</span>
                       </div>
                     </li>
                     <li class="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 xl:w-1/3 ">
                       <!-- 列3的内容 -->
                       <div class="flex items-center">
-                        <p>
-                          <Icon name="ic:baseline-article" size="20" color="black" />文章类别:<span class="ml-2">{{
-                            content.type }}</span>
-                        </p>
+                        <Icon name="ic:baseline-article" size="20" color="black" /><span class="ml-1 font-thin">文章类别:{{
+                          content.type }}</span>
                       </div>
                     </li>
                   </ul>

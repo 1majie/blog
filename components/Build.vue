@@ -2,7 +2,7 @@
  * @Author: freedom 957420317@qq.com
  * @Date: 2023-12-06 20:41:55
  * @LastEditors: freedom 957420317@qq.com
- * @LastEditTime: 2023-12-09 21:56:16
+ * @LastEditTime: 2023-12-09 22:16:35
  * @FilePath: \blog_before_vue3_nuxt\components\Build.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -90,6 +90,7 @@ onUpdated(() => {
   // 代码高亮
   Prism.highlightAll(); //修改内容后重新渲染
   initArt()
+  getList(page, type);
 });
 
 onUnmounted(() => {
@@ -297,6 +298,58 @@ const onScroll = () => {
                   </ul>
                 </div>
               </div>
+              <div class="max-w-md mx-auto bg-white p-6 rounded-md shadow-md mt-4">
+                <h1 class="text-2xl font-bold mb-4">关于作者</h1>
+
+                <img src="author-avatar.jpg" alt="Author Avatar" class="w-full h-32 object-cover mb-4 rounded-md">
+
+                <p class="text-gray-700 mb-4">
+                  一叶一菩提，一码一世界。
+                </p>
+
+                <div class="flex items-center">
+                  <svg class="w-6 h-6 text-gray-500 mr-2" fill="none" stroke="currentColor" stroke-linecap="round"
+                    stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                  </svg>
+                  <p class="text-gray-700">Follow me on Twitter: <a href="https://twitter.com/your_twitter_handle"
+                      target="_blank" class="text-blue-500"> @your_twitter_handle</a></p>
+                </div>
+
+                <div class="flex items-center mt-4">
+                  <svg class="w-6 h-6 text-gray-500 mr-2" fill="none" stroke="currentColor" stroke-linecap="round"
+                    stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+                    <path
+                      d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-3-13h6v6H9z">
+                    </path>
+                  </svg>
+                  <p class="text-gray-700">Visit my website: <a href="https://www.yourwebsite.com" target="_blank"
+                      class="text-blue-500"> www.yourwebsite.com</a></p>
+                </div>
+
+                <div class="flex items-center mt-4">
+                  <svg class="w-6 h-6 text-green-500 mr-2" fill="none" stroke="currentColor" stroke-linecap="round"
+                    stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+                    <path
+                      d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h2v2h-2v-2zm0-10h2v6h-2v-6z">
+                    </path>
+                  </svg>
+                  <p class="text-gray-700">Follow my WeChat Public Account: [Your WeChat Public Account Name]</p>
+                </div>
+
+                <div class="flex items-center mt-4">
+                  <svg class="w-6 h-6 text-red-500 mr-2" fill="none" stroke="currentColor" stroke-linecap="round"
+                    stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+                    <path
+                      d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-3 13h6v2H9v-2zm0-10h6v6H9v-6z">
+                    </path>
+                  </svg>
+                  <p class="text-gray-700">Subscribe to my Bilibili Channel: <a
+                      href="https://space.bilibili.com/your_bilibili_id" target="_blank"
+                      class="text-red-500">BilibiliID</a></p>
+                </div>
+              </div>
+
             </div>
             <div class=" bg-pink-300" style="width:15%">
               5
@@ -314,7 +367,51 @@ const onScroll = () => {
               2
             </div>
             <div class=" bg-blue-500" style="width:40%">
-              3
+              <div class="flex flex-wrap justify-center gap-x-8 gap-y-8">
+                <div v-for="(item) in list">
+                  <div class="card card-compact bg-base-100 shadow-lg top-5 border border-base-300"
+                    style="height: 24rem; width:26rem" :class="{
+                      'bg-base-300': colorMode.value === 'dark',
+                      'bg-base-100': colorMode.value === 'light',
+                    }">
+                    <div class="mx-auto">
+                      <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type } })"><img
+                          :src="baseUrl + '/' + item.img" class="aspect-video w-full object-cover rounded"
+                          :alt="item.title" />
+                      </NuxtLink>
+                    </div>
+                    <div class="mt-2 ml-2">
+                      <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type } })">
+                        <h3 class="font-bold" :title="item.title">
+                          {{ item.title }}
+                        </h3>
+                      </NuxtLink>
+                    </div>
+                    <div class="ml-2 h-20 mb-2">
+                      <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type } })"><span
+                          class="line-clamp-2" :title="item.summary">{{ item.summary }}
+                        </span></NuxtLink>
+                    </div>
+                    <div class="flex items-center mb-2 ml-2 ">
+                      <!-- 列1的内容 -->
+                      <div class="flex items-center ">
+                        <Icon name="ic:baseline-event-available" class="font-thin" color="black" />
+                        <span class="ml-1 font-thin">{{ utils.dataFliter(item.createTime) }}</span>
+                      </div>
+
+                      <div class="flex items-center flex-grow">
+                        <Icon name="ic:baseline-preview" class="font-thin ml-4" color="black" />
+                        <span class="ml-1 font-thin">{{ item.viewNum }}</span>
+                      </div>
+
+                      <div class="flex items-center ml-auto mr-2">
+                        <Icon name="ic:baseline-article" class="font-thin" color="black" />
+                        <span class="ml-1 font-thin">{{ item.type }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class=" bg-purple-500" style="width:15%">
               4
@@ -335,50 +432,7 @@ const onScroll = () => {
               2
             </div>
             <div class=" bg-blue-700" style="width:40%">
-              <div class="flex flex-wrap justify-center gap-x-8 gap-y-8">
-      <div v-for="(item) in list">
-        <div class="card card-compact bg-base-100 shadow-lg top-5 border border-base-300"
-          style="height: 24rem; width:26rem" :class="{
-            'bg-base-300': colorMode.value === 'dark',
-            'bg-base-100': colorMode.value === 'light',
-          }">
-          <div class="mx-auto">
-            <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type } })"><img
-                :src="baseUrl + '/' + item.img" class="aspect-video w-full object-cover rounded" :alt="item.title" />
-            </NuxtLink>
-          </div>
-          <div class="mt-2 ml-2">
-            <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type } })">
-              <h3 class="font-bold" :title="item.title">
-                {{ item.title }}
-              </h3>
-            </NuxtLink>
-          </div>
-          <div class="ml-2 h-20 mb-2">
-            <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type } })"><span class="line-clamp-2"
-                :title="item.summary">{{ item.summary }}
-              </span></NuxtLink>
-          </div>
-          <div class="flex items-center mb-2 ml-2 ">
-            <!-- 列1的内容 -->
-            <div class="flex items-center ">
-              <Icon name="ic:baseline-event-available" class="font-thin" color="black" />
-              <span class="ml-1 font-thin">{{ utils.dataFliter(item.createTime) }}</span>
-            </div>
-
-            <div class="flex items-center flex-grow">
-              <Icon name="ic:baseline-preview" class="font-thin ml-4" color="black" />
-              <span class="ml-1 font-thin">{{ item.viewNum }}</span>
-            </div>
-
-            <div class="flex items-center ml-auto mr-2">
-              <Icon name="ic:baseline-article" class="font-thin" color="black" />
-              <span class="ml-1 font-thin">{{ item.type }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+              3
             </div>
             <div class=" bg-purple-700" style="width:15%">
               4
@@ -567,6 +621,5 @@ h6 {
 .code-toolbar>.toolbar>.toolbar-item {
   margin-right: 10px;
   color: white;
-}
-</style>
+}</style>
 

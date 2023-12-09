@@ -2,7 +2,7 @@
  * @Author: freedom 957420317@qq.com
  * @Date: 2023-12-06 20:41:55
  * @LastEditors: freedom 957420317@qq.com
- * @LastEditTime: 2023-12-09 12:47:17
+ * @LastEditTime: 2023-12-09 21:51:13
  * @FilePath: \blog_before_vue3_nuxt\components\List.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -20,7 +20,6 @@ const route = useRoute()
 if (route.query.type) {
   type = route.query.type
 }
-console.log(type)
 const getList = async (page, type) => {
   // 防止客户端执行时，直接返回null
   await nextTick()
@@ -36,12 +35,13 @@ const getList = async (page, type) => {
 }
 getList(page, type);
 watch(
-  () => route.query.type, // 监听 $route.query.param 的变化
+  () => route.query, // 监听 $route.query.param 的变化
   async (newType) => {
     // 当切换菜单时，分页重置为1
-    page = 1
+    page = route.query.page || 1
+    type = route.query.type
     // 在路由参数变化时重新加载数据
-    getList(page, newType);
+    getList(page, type);
   }
 );
 onMounted(() => {
@@ -59,18 +59,19 @@ onMounted(() => {
             'bg-base-100': colorMode.value === 'light',
           }">
           <div class="mx-auto">
-            <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID } })"><img :src="baseUrl + '/' + item.img"
-                class="aspect-video w-full object-cover rounded" :alt="item.title" /></NuxtLink>
+            <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type } })"><img
+                :src="baseUrl + '/' + item.img" class="aspect-video w-full object-cover rounded" :alt="item.title" />
+            </NuxtLink>
           </div>
           <div class="mt-2 ml-2">
-            <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID } })">
+            <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type } })">
               <h3 class="font-bold" :title="item.title">
                 {{ item.title }}
               </h3>
             </NuxtLink>
           </div>
           <div class="ml-2 h-20 mb-2">
-            <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID } })"><span class="line-clamp-2"
+            <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type } })"><span class="line-clamp-2"
                 :title="item.summary">{{ item.summary }}
               </span></NuxtLink>
           </div>
@@ -99,12 +100,12 @@ onMounted(() => {
         'bg-base-300': colorMode.value === 'dark',
         'bg-base-100': colorMode.value === 'light',
       }">
-        <button v-if="page > 1" class="join-item btn btn-outline border border-base-300" @click="getList(--page, type)">{{
-          $t("page.before")
-        }}</button>
-        <button v-if="total > 1 && page < total / pageSize" class="join-item btn btn-outline border border-base-300"
-          @click="getList(++page, type)">{{ $t("page.next")
-          }}</button>
+        <NuxtLink v-if="page > 1" target="_self"
+          :to="localePath({ name: 'index', query: { type: type, page: page - 1 } })">{{
+            $t("page.before") }}</NuxtLink>
+        <NuxtLink v-if="total > 1 && page < total / pageSize" target="_self"
+          :to="localePath({ name: 'index', query: { type: type, page: page + 1 } })">{{
+            $t("page.next") }}</NuxtLink>
       </div>
     </div>
   </div>

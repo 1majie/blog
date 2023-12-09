@@ -2,7 +2,7 @@
  * @Author: freedom 957420317@qq.com
  * @Date: 2023-12-06 20:41:55
  * @LastEditors: freedom 957420317@qq.com
- * @LastEditTime: 2023-12-09 07:50:27
+ * @LastEditTime: 2023-12-09 12:47:17
  * @FilePath: \blog_before_vue3_nuxt\components\List.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -14,7 +14,7 @@ let colorMode = ref({});
 let page = 1;
 let list = ref([]);
 let total = 0;
-let pageSize = 10;
+let pageSize = 2;
 let type = "技术"
 const route = useRoute()
 if (route.query.type) {
@@ -38,6 +38,8 @@ getList(page, type);
 watch(
   () => route.query.type, // 监听 $route.query.param 的变化
   async (newType) => {
+    // 当切换菜单时，分页重置为1
+    page = 1
     // 在路由参数变化时重新加载数据
     getList(page, newType);
   }
@@ -80,19 +82,19 @@ onMounted(() => {
             </div>
 
             <div class="flex items-center flex-grow">
-              <Icon name="ic:baseline-preview"  class="font-thin ml-4" color="black" />
+              <Icon name="ic:baseline-preview" class="font-thin ml-4" color="black" />
               <span class="ml-1 font-thin">{{ item.viewNum }}</span>
             </div>
 
             <div class="flex items-center ml-auto mr-2">
-              <Icon name="ic:baseline-article"  class="font-thin" color="black" />
+              <Icon name="ic:baseline-article" class="font-thin" color="black" />
               <span class="ml-1 font-thin">{{ item.type }}</span>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="flex flex-wrap justify-center gap-x-8 gap-y-8 mt-10">
+    <div v-if="list.length > 0" class="flex flex-wrap justify-center gap-x-8 gap-y-8 mt-10">
       <div class="join grid grid-cols-2" :class="{
         'bg-base-300': colorMode.value === 'dark',
         'bg-base-100': colorMode.value === 'light',

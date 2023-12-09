@@ -2,7 +2,7 @@
  * @Author: freedom 957420317@qq.com
  * @Date: 2023-12-06 20:41:55
  * @LastEditors: freedom 957420317@qq.com
- * @LastEditTime: 2023-12-09 08:22:55
+ * @LastEditTime: 2023-12-09 14:45:18
  * @FilePath: \blog_before_vue3_nuxt\components\Build.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -13,14 +13,17 @@ import { ref, nextTick } from 'vue';
 const baseUrl = utils.getBaseUrl();
 let colorMode = ref({});
 let content = ref();
+let menus = ref();
 let id = 1
 const route = useRoute()
 let url = ref("")
 let userName = ref("");
-
+let docMenu = ref([]);
+let active = ref(0);
 // 获取文章id
 if (route.query.id) {
   id = route.query.id
+  console.log(id)
 }
 
 // 设置浏览量
@@ -36,6 +39,7 @@ const getTblContent = async (id) => {
   await nextTick()
   let { data: count } = await useFetch(baseUrl + '/base/getTblContent?ID=' + id)
   content.value = count.value.data.retblContent;
+  menus.value = count.value.data.menus;
   getUserName(count.value.data.retblContent.authorId);
 }
 
@@ -56,13 +60,17 @@ onMounted(async () => {
   Prism.highlightAll();
   // 获取文章地址
   url = window.location.href;
+  window.addEventListener('scroll', onScroll)
 })
-
 onUpdated(() => {
   // 代码高亮
   Prism.highlightAll(); //修改内容后重新渲染
+  initArt()
 });
 
+onUnmounted(() => {
+  window.removeEventListener('scroll', onScroll)
+});
 // 修改代码复制文字为中文
 useHead({
   bodyAttrs: {
@@ -71,6 +79,84 @@ useHead({
     "data-prismjs-copy-success": "已复制"
   }
 })
+// 当路由参数发生变化 重新获取文章内容
+watch(() => route.query, (newQuery, oldQuery) => {
+  if (newQuery.id !== oldQuery.id) {
+    // 当 id 参数发生变化时执行你的逻辑
+    id = newQuery.id;
+    getTblContent(id);
+  }
+});
+
+// 获取文章锚点
+const initArt = () => {
+  let markMenu = []
+  setTimeout(() => {
+    const articleDom = document.querySelector('.editor-content-view')
+    if (articleDom) {
+      for (let ele of articleDom.children) {
+        let i = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].indexOf(ele.tagName.toLowerCase())
+        if (i > -1 && ele.textContent) {
+          ele.setAttribute('id', 'markMenu_' + markMenu.length)
+          ele.setAttribute('name', 'markMenu_' + markMenu.length)
+          markMenu.push({
+            level: i,
+            text: ele.textContent,
+            id: 'markMenu_' + markMenu.length,
+            name: 'markMenu_' + markMenu.length
+          })
+        }
+      }
+    }
+    //docMenu为目录数据
+    docMenu.value = markMenu
+  })
+}
+
+// 处理滚动事件
+const handlerSroll = (e, id) => {
+  //由于存在头部的关系,会挡住标题,所以还需计算滚动头部的高度
+  const element = document.querySelector(`.page-header`);
+  const targetDom = document.querySelector(`#${id}`);
+  //测试到火狐浏览器存在锚点定位的问题,使用scrollIntoView的方法
+  if (navigator.userAgent.indexOf("Firefox") > 0) {
+    e.preventDefault()
+    targetDom.scrollIntoView({
+      //滚动到指定节点
+      block: "start",
+      behavior: "auto",
+    });
+    setTimeout(() => {
+      window.scrollBy(0, -element.offsetHeight)
+    }, 100)
+    return
+  }
+  window.scrollBy(0, -element.offsetHeight)
+}
+
+// 滚动事件
+const onScroll = () => {
+  const element = document.querySelector(`.page-header`);
+  // 获取所有锚点元素
+  const titleNavList = document.querySelectorAll('.article h1,.article h2,.article h3,.article h4,.article h5,.article h6')
+  // 计算所有锚点元素的 offsetTop + 头部的高度
+  const offsetTopList = []
+  titleNavList.forEach(item => {
+    offsetTopList.push(item.offsetTop - element.offsetHeight)
+  })
+  // 获取当前文档流的 scrollTop
+  const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+  // 定义当前所在的目录下标
+  let navIndex = 0
+  // 比较当前文章滚动的距离scrollTop与各锚点标题的offsetTop ,当scrollTop超过当前元素的scrollTop,则定位到当前标题
+  for (let n = 0; n < offsetTopList.length; n++) {
+    if (scrollTop >= offsetTopList[n]) {
+      navIndex = n
+    }
+  }
+  //当前高亮的目录索引,默认为0
+  active.value = navIndex
+}
 
 </script>
 <template>
@@ -87,19 +173,23 @@ useHead({
             </div>
             <div class=" bg-green-300" style="width:15%">
               <ul class="menu bg-base-200">
-                <li>
-                  <h2 class="menu-title">Title</h2>
-                  <ul>
-                    <li><a>Item 1</a></li>
-                    <li><a>Item 2</a></li>
-                    <li><a>Item 3</a></li>
+                <li v-if="content" v-for="item in menus">
+                  <h2 class="menu-title">{{ item.subset }}</h2>
+                  <ul v-for="tblContent in item.tblContents">
+                    <li>
+                      <NuxtLink target="_self" :to="localePath({ name: 'maintance', query: { id: tblContent.ID } })">{{
+                        tblContent.title }}</NuxtLink>
+                    </li>
                   </ul>
                 </li>
               </ul>
             </div>
-            <div class=" bg-base-100  p-4" style="width:40%">
+            <div class=" bg-base-100 pl-4 pr-4 pb-2" style="width:40%">
+
               <NuxtLink :to="url">
-                <h1 v-if="content" class="text-3xl font-bold text-center">{{ content.title }}</h1>
+                <img v-if="content" :src="baseUrl + '/' + content.img" class="aspect-video w-full object-cover rounded"
+                  :alt="content.title" />
+                <h1 v-if="content" class="text-3xl font-bold text-center mt-4">{{ content.title }}</h1>
               </NuxtLink>
               <div v-if="content" class="overflow-x-auto">
                 <hr class="mt-4 mb-4 " />
@@ -151,30 +241,39 @@ useHead({
                 class="badge badge-primary badge-md badge-outline mr-4 mt-4">
                 {{ item }}
               </div>
+              <div class="grid gap-8 sm:grid-cols-2 mt-2">
+                <a href="/docs/guide/going-further/internals"
+                  class="block px-6 py-8 border not-prose rounded-lg border-gray-200 dark:border-gray-800 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 group">
+                  <div>
+                    <Icon name="ic:baseline-arrow-back" size="30" color="black" />
+                  </div>
+                  <p class="font-medium text-gray-900 dark:text-white text-[15px] mb-1">Nuxt 是如何工作的？</p>
+                  <p class="text-sm font-normal text-gray-500 dark:text-gray-400 line-clamp-2">Nuxt 是一个简洁但高度可定制的框架，用于构建
+                    Web 应用程序。</p>
+                </a>
+                <a href="/docs/guide/going-further/modules"
+                  class="block px-6 py-8 border not-prose rounded-lg border-gray-200 dark:border-gray-800 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 group text-right">
+                  <div>
+                    <Icon name="ic:baseline-arrow-forward" size="30" color="black" />
+                  </div>
+                  <p class="font-medium text-gray-900 dark:text-white text-[15px] mb-1">模块作者指南</p>
+                  <p class="text-sm font-normal text-gray-500 dark:text-gray-400 line-clamp-2">
+                    学习如何创建一个Nuxt模块，以集成、增强或扩展任何Nuxt应用程序。</p>
+                </a>
+              </div>
             </div>
             <div class=" bg-purple-300" style="width:15%">
-              <ul class="menu bg-base-200">
-                <li><a>Item 1</a></li>
-                <li>
-                  <details open>
-                    <summary>Parent</summary>
-                    <ul>
-                      <li><a>Submenu 1</a></li>
-                      <li><a>Submenu 2</a></li>
-                      <li>
-                        <details open>
-                          <summary>Parent</summary>
-                          <ul>
-                            <li><a>Submenu 1</a></li>
-                            <li><a>Submenu 2</a></li>
-                          </ul>
-                        </details>
-                      </li>
-                    </ul>
-                  </details>
-                </li>
-                <li><a>Item 3</a></li>
-              </ul>
+              <div v-if="docMenu.length > 0" class="docs-aside">
+                <span class="aside-title">目录</span>
+                <div class="aside-body">
+                  <ul class="aside-article-catalog">
+                    <li v-for="(item, index) in docMenu" :key="item.id" :class="`level_${item.level}`">
+                      <a :href="'#' + item.id" :class="{ active: active === index }"
+                        @click="handlerSroll($event, item.id, index)">{{ item.text }}</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
             <div class=" bg-pink-300" style="width:15%">
               5
@@ -249,7 +348,51 @@ useHead({
   </div>
 </template>
 
-<style>
+<style scss>
+/* 左边侧边栏样式 */
+.docs-aside {
+  display: flex;
+  flex-direction: column;
+  bottom: 0;
+  z-index: 100;
+  width: 165px;
+}
+
+.docs-aside .aside-title {
+  border-bottom: 1px solid #d5dbe7;
+  font-size: 12px;
+  color: #999999;
+  line-height: 20px;
+  padding: 10px 0;
+}
+
+.docs-aside .aside-body {
+  flex: 1 1 100%;
+  padding: 10px 0;
+  overflow-y: auto;
+}
+
+.docs-aside .aside-article-catalog {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.docs-aside .aside-article-catalog>li>a {
+  display: block;
+  font-size: 14px;
+  line-height: 20px;
+  padding: 5px 0;
+  color: #818991;
+}
+
+.docs-aside .aside-article-catalog>li>a:hover,
+.docs-aside .aside-article-catalog>li>a.active {
+  color: #1672FA;
+}
+
+
+/* 博客内容样式 */
 .editor-content-view {
   overflow-x: auto;
 }

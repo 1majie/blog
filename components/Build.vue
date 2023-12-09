@@ -2,7 +2,7 @@
  * @Author: freedom 957420317@qq.com
  * @Date: 2023-12-06 20:41:55
  * @LastEditors: freedom 957420317@qq.com
- * @LastEditTime: 2023-12-09 14:45:18
+ * @LastEditTime: 2023-12-09 21:17:19
  * @FilePath: \blog_before_vue3_nuxt\components\Build.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -14,6 +14,8 @@ const baseUrl = utils.getBaseUrl();
 let colorMode = ref({});
 let content = ref();
 let menus = ref();
+let back = ref();
+let after = ref();
 let id = 1
 const route = useRoute()
 let url = ref("")
@@ -40,6 +42,8 @@ const getTblContent = async (id) => {
   let { data: count } = await useFetch(baseUrl + '/base/getTblContent?ID=' + id)
   content.value = count.value.data.retblContent;
   menus.value = count.value.data.menus;
+  back.value = count.value.data.back;
+  after.value = count.value.data.after;
   getUserName(count.value.data.retblContent.authorId);
 }
 
@@ -242,24 +246,23 @@ const onScroll = () => {
                 {{ item }}
               </div>
               <div class="grid gap-8 sm:grid-cols-2 mt-2">
-                <a href="/docs/guide/going-further/internals"
-                  class="block px-6 py-8 border not-prose rounded-lg border-gray-200 dark:border-gray-800 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 group">
+                <NuxtLink v-if="back && back.ID > 0" target="_self"
+                  :to="localePath({ name: 'maintance', query: { id: back.ID } })">
                   <div>
                     <Icon name="ic:baseline-arrow-back" size="30" color="black" />
                   </div>
-                  <p class="font-medium text-gray-900 dark:text-white text-[15px] mb-1">Nuxt 是如何工作的？</p>
-                  <p class="text-sm font-normal text-gray-500 dark:text-gray-400 line-clamp-2">Nuxt 是一个简洁但高度可定制的框架，用于构建
-                    Web 应用程序。</p>
-                </a>
-                <a href="/docs/guide/going-further/modules"
-                  class="block px-6 py-8 border not-prose rounded-lg border-gray-200 dark:border-gray-800 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 group text-right">
+                  <p class="font-medium text-[15px] mb-1">{{ back.title }}</p>
+                  <p class="text-sm font-normalline-clamp-2">{{ back.summary }}</p>
+                </NuxtLink>
+                <NuxtLink v-if="after && after.ID > 0" target="_self"
+                  :to="localePath({ name: 'maintance', query: { id: after.ID } })">
                   <div>
                     <Icon name="ic:baseline-arrow-forward" size="30" color="black" />
                   </div>
-                  <p class="font-medium text-gray-900 dark:text-white text-[15px] mb-1">模块作者指南</p>
-                  <p class="text-sm font-normal text-gray-500 dark:text-gray-400 line-clamp-2">
-                    学习如何创建一个Nuxt模块，以集成、增强或扩展任何Nuxt应用程序。</p>
-                </a>
+                  <p class="font-medium text-[15px] mb-1">{{ after.title }}</p>
+                  <p class="text-sm font-normal line-clamp-2">{{ after.summary }}</p>
+                </NuxtLink>
+
               </div>
             </div>
             <div class=" bg-purple-300" style="width:15%">

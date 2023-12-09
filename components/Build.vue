@@ -2,7 +2,7 @@
  * @Author: freedom 957420317@qq.com
  * @Date: 2023-12-06 20:41:55
  * @LastEditors: freedom 957420317@qq.com
- * @LastEditTime: 2023-12-09 22:16:35
+ * @LastEditTime: 2023-12-10 07:43:34
  * @FilePath: \blog_before_vue3_nuxt\components\Build.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -22,9 +22,6 @@ let url = ref("")
 let userName = ref("");
 let docMenu = ref([]);
 let active = ref(0);
-let pageSize = 10
-let page = 1
-let total = 0;
 let type = "技术"
 let list = ref([]);
 // 获取文章id
@@ -34,20 +31,13 @@ if (route.query.id) {
 }
 
 // 猜你喜欢
-const getList = async (page, type) => {
+const getList = async () => {
   // 防止客户端执行时，直接返回null
   await nextTick()
-  if (total > 0 && page > total / pageSize) {
-    page = total / pageSize;
-  }
-  if (page < 1) {
-    page = 1;
-  }
-  let { data: count } = await useFetch(baseUrl + '/base/getTblContentList?page=' + page + '&pageSize=' + pageSize + '&type=' + type)
-  list.value = count.value.data.list;
-  total = count.value.data.total;
+  let { data: count } = await useFetch(baseUrl + '/base/getTblContentList?page=1&pageSize=10&type=' + type)
+  list.value = count.value.data.result.list;
 }
-getList(page, type);
+getList();
 // 设置浏览量
 const setView = async (id) => {
   // 防止客户端执行时，直接返回null
@@ -85,12 +75,12 @@ onMounted(async () => {
   // 获取文章地址
   url = window.location.href;
   window.addEventListener('scroll', onScroll)
+  getList();
 })
 onUpdated(() => {
   // 代码高亮
   Prism.highlightAll(); //修改内容后重新渲染
   initArt()
-  getList(page, type);
 });
 
 onUnmounted(() => {
@@ -621,5 +611,6 @@ h6 {
 .code-toolbar>.toolbar>.toolbar-item {
   margin-right: 10px;
   color: white;
-}</style>
+}
+</style>
 

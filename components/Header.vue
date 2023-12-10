@@ -51,36 +51,36 @@ onMounted(() => {
         </label>
         <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow rounded-box w-52">
           <li>
-            <NuxtLink :to="localePath('/')">{{ $t("menu.home") }}</NuxtLink>
-          </li>
-          <li>
-            <NuxtLink :to="localePath('/test')">{{ $t("menu.download") }}</NuxtLink>
-          </li>
-          <li>
-            <NuxtLink :to="localePath('/maintance')">{{
-              $t("menu.software")
-            }}</NuxtLink>
-          </li>
-          <li>
-            <NuxtLink :to="localePath('/maintance')">{{
-              $t("menu.vps")
-            }}</NuxtLink>
-          </li>
-          <li>
-            <NuxtLink :to="localePath('/maintance')">{{
-              $t("menu.proxy")
-            }}</NuxtLink>
-          </li>
-          <li>
-            <NuxtLink :to="localePath('/maintance')">{{
-              $t("menu.money")
-            }}</NuxtLink>
-          </li>
+          <NuxtLink :to="localePath({ name: 'index', query: { type: '技术' } })">{{ $t("menu.home") }}</NuxtLink>
+        </li>
+        <li>
+          <NuxtLink :to="localePath({ name: 'index', query: { type: '下载' } })">{{ $t("menu.download") }}</NuxtLink>
+        </li>
+        <li>
+          <NuxtLink :to="localePath({ name: 'index', query: { type: '软件' } })">{{
+            $t("menu.software")
+          }}</NuxtLink>
+        </li>
+        <li>
+          <NuxtLink :to="localePath({ name: 'index', query: { type: 'VPS' } })">{{
+            $t("menu.vps")
+          }}</NuxtLink>
+        </li>
+        <li>
+          <NuxtLink :to="localePath({ name: 'index', query: { type: '机场' } })">{{
+            $t("menu.proxy")
+          }}</NuxtLink>
+        </li>
+        <li>
+          <NuxtLink :to="localePath({ name: 'index', query: { type: '搞钱' } })">{{
+            $t("menu.money")
+          }}</NuxtLink>
+        </li>
         </ul>
       </div>
-      <a class="btn btn-ghost normal-case sm:text lg:text-xl">{{
-        $t("title")
-      }}</a>
+      <a class="btn btn-ghost normal-case sm:text lg:text-xl">
+        <img src="/images/logo.png" class=" w-20 h-10" alt="一码界">
+     </a>
     </div>
     <div class="navbar-center hidden lg:flex">
       <ul class="menu menu-horizontal gap-6 px-1 text-lg">

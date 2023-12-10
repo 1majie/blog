@@ -2,7 +2,7 @@
  * @Author: freedom 957420317@qq.com
  * @Date: 2023-12-06 20:41:55
  * @LastEditors: freedom 957420317@qq.com
- * @LastEditTime: 2023-12-10 07:43:34
+ * @LastEditTime: 2023-12-10 15:47:30
  * @FilePath: \blog_before_vue3_nuxt\components\Build.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -37,7 +37,7 @@ const getList = async () => {
   let { data: count } = await useFetch(baseUrl + '/base/getTblContentList?page=1&pageSize=10&type=' + type)
   list.value = count.value.data.result.list;
 }
-getList();
+
 // 设置浏览量
 const setView = async (id) => {
   // 防止客户端执行时，直接返回null
@@ -66,7 +66,7 @@ const getUserName = async (id) => {
 }
 
 getTblContent(id);
-
+getList();
 onMounted(async () => {
   await nextTick()
   setView(id);
@@ -76,6 +76,10 @@ onMounted(async () => {
   url = window.location.href;
   window.addEventListener('scroll', onScroll)
   getList();
+  window.scrollTo({
+        top: 0,
+        behavior: 'smooth' // 如果要平滑滚动，请添加这个选项
+      });
 })
 onUpdated(() => {
   // 代码高亮
@@ -100,6 +104,10 @@ watch(() => route.query, (newQuery, oldQuery) => {
     // 当 id 参数发生变化时执行你的逻辑
     id = newQuery.id;
     getTblContent(id);
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth' // 如果要平滑滚动，请添加这个选项
+      });
   }
 });
 
@@ -177,190 +185,216 @@ const onScroll = () => {
 <template>
   <div class=" w-full mx-auto mt-20 mb-20 font-sans ">
     <!-- 第一层div占屏幕宽度的80% -->
-    <div class="w-full bg-gray-300">
+    <div class="w-full ">
       <!-- 第二层4个div每行一个div -->
       <div class="flex flex-col">
-        <div class="w-full bg-yellow-300">
+        <div class="w-full ">
           <!-- 第三层：5个div，每个div占一列宽度为10% 10% 60% 10% 10% -->
           <div class="flex">
-            <div class=" bg-red-300" style="width:15%">
-              1
-            </div>
-            <div class=" bg-green-300" style="width:15%">
-              <ul class="menu bg-base-200">
-                <li v-if="content" v-for="item in menus">
-                  <h2 class="menu-title">{{ item.subset }}</h2>
-                  <ul v-for="tblContent in item.tblContents">
-                    <li>
-                      <NuxtLink target="_self" :to="localePath({ name: 'maintance', query: { id: tblContent.ID } })">{{
-                        tblContent.title }}</NuxtLink>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-            <div class=" bg-base-100 pl-4 pr-4 pb-2" style="width:40%">
+            <!-- 第一行 第一列 -->
+            <div class="" style="width:15%">
 
-              <NuxtLink :to="url">
-                <img v-if="content" :src="baseUrl + '/' + content.img" class="aspect-video w-full object-cover rounded"
-                  :alt="content.title" />
-                <h1 v-if="content" class="text-3xl font-bold text-center mt-4">{{ content.title }}</h1>
-              </NuxtLink>
-              <div v-if="content" class="overflow-x-auto">
-                <hr class="mt-4 mb-4 " />
-                <div class="container mx-auto">
-                  <ul class="flex flex-wrap">
-                    <li class="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 xl:w-1/3">
-                      <!-- 列1的内容 -->
-                      <div class="flex items-center">
-                        <Icon name="ic:baseline-event-available" size="20" color="black" /><span
-                          class="ml-1 font-thin">发布时间:{{
-                            utils.dataFliter(content.createTime) }}</span>
-                      </div>
-                    </li>
-                    <li class="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 xl:w-1/3 ">
-                      <!-- 列2的内容 -->
-                      <div class="flex items-center ">
-                        <Icon name="ic:baseline-preview" size="20" color="black" /><span class="ml-1 font-thin">阅读次数:{{
-                          content.viewNum }}</span>
-                      </div>
-                    </li>
-                    <li class="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 xl:w-1/3 ">
-                      <!-- 列3的内容 -->
-                      <div class="flex items-center">
-                        <Icon name="ic:baseline-article" size="20" color="black" /><span class="ml-1 font-thin">文章类别:{{
-                          content.type }}</span>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-                <hr class="mt-4 mb-4 " />
+            </div>
+            <!-- 第一行 第二列 -->
+            <div class="" style="width:15%">
+              <div v-if="menus && menus.length > 0 && content" class="border border-base-300" :class="{
+                'bg-base-300': colorMode.value === 'dark',
+                'bg-base-100': colorMode.value === 'light',
+              }">
+                <ul class="bg-base-100 p-2 rounded ">
+                  <li v-if="content" v-for="(item, index) in menus" class="mb-4">
+                    <h4 class="text-2xl mb-2 border-b border-base-300 pb-2">
+                      {{ item.subset }}
+                    </h4>
+                    <ul>
+                      <li v-for="tblContent in item.tblContents" :key="tblContent.ID" class="mb-2">
+                        <NuxtLink target="_self"
+                          :to="localePath({ name: 'maintance', query: { id: tblContent.ID, type: type } })" class=" ml-4">
+                          {{ tblContent.title }}
+                        </NuxtLink>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
               </div>
-              <div v-if="content" class="editor-content-view" v-html="content.content">
-              </div>
-              <hr v-if="content" class="mt-4 mb-4" />
-              <div v-if="content" class="h-32 card bg-base-200 rounded-box  space-y-2 p-6">
-                <p>
-                  <Icon name="ep:user" size="20" color="bg-base-200" class="mr-2" />文章作者: {{ userName }}
-                </p>
-                <p>
-                  <Icon name="ic:baseline-link" size="20" color="bg-base-200" class="mr-2" />文章链接:
-                  <NuxtLink :to="url">{{ url }}</NuxtLink>
-                </p>
-                <p>
-                  <Icon name="ic:baseline-copyright" size="20" color="bg-base-200" class="mr-2" />版权声明: 本博客所有文章除特別声明外，均采用
-                  CC BY 4.0 许可协议。转载请注明来源 {{ userName }} !
-                </p>
-              </div>
-              <div v-if="content" v-for="(item, index) in content.tagsView " :key="index"
-                class="badge badge-primary badge-md badge-outline mr-4 mt-4">
-                {{ item }}
-              </div>
-              <div class="grid gap-8 sm:grid-cols-2 mt-2">
-                <NuxtLink v-if="back && back.ID > 0" target="_self"
-                  :to="localePath({ name: 'maintance', query: { id: back.ID } })">
-                  <div>
-                    <Icon name="ic:baseline-arrow-back" size="30" color="black" />
-                  </div>
-                  <p class="font-medium text-[15px] mb-1">{{ back.title }}</p>
-                  <p class="text-sm font-normalline-clamp-2">{{ back.summary }}</p>
+
+            </div>
+            <!-- 第一行 第三列 -->
+            <div class="bg-base-100 pl-4 pr-4 pb-2" style="width:40%">
+              <div v-if="content" class="border rounded border-base-300" :class="{
+                'bg-base-300': colorMode.value === 'dark',
+                'bg-base-100': colorMode.value === 'light',
+              }">
+                <!--文章标题 -->
+                <NuxtLink :to="url">
+                  <h1 v-if="content" class="text-3xl font-bold text-center mt-4">{{ content.title }}</h1>
                 </NuxtLink>
-                <NuxtLink v-if="after && after.ID > 0" target="_self"
-                  :to="localePath({ name: 'maintance', query: { id: after.ID } })">
-                  <div>
-                    <Icon name="ic:baseline-arrow-forward" size="30" color="black" />
+                <!--文章发布时间 浏览量 文章类别 -->
+                <div v-if="content" class="overflow-x-auto">
+                  <hr class="mt-4 mb-4 ml-2 mr-2" />
+                  <div class="container mx-auto pl-2 pr-2">
+                    <ul class="flex flex-wrap">
+                      <li class="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 xl:w-1/3">
+                        <!-- 列1的内容 -->
+                        <div class="flex items-center">
+                          <Icon name="ic:baseline-event-available" size="20" color="black" /><span
+                            class="ml-1 font-thin">发布时间:{{
+                              utils.dataFliter(content.createTime) }}</span>
+                        </div>
+                      </li>
+                      <li class="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 xl:w-1/3 ">
+                        <!-- 列2的内容 -->
+                        <div class="flex items-center ">
+                          <Icon name="ic:baseline-preview" size="20" color="black" /><span class="ml-1 font-thin">阅读次数:{{
+                            content.viewNum }}</span>
+                        </div>
+                      </li>
+                      <li class="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 xl:w-1/3 ">
+                        <!-- 列3的内容 -->
+                        <div class="flex items-center">
+                          <Icon name="ic:baseline-article" size="20" color="black" /><span class="ml-1 font-thin">文章类别:{{
+                            content.type }}</span>
+                        </div>
+                      </li>
+                    </ul>
                   </div>
-                  <p class="font-medium text-[15px] mb-1">{{ after.title }}</p>
-                  <p class="text-sm font-normal line-clamp-2">{{ after.summary }}</p>
-                </NuxtLink>
+                  <hr class="mt-4 mb-4 mr-2 ml-2" />
+                </div>
+                <!--文章内容 -->
+                <div v-if="content" class="editor-content-view" v-html="content.content">
+                </div>
+                <hr v-if="content" class="mt-4 mb-4 ml-2 mr-2" />
+                <!--文章作者 文章链接 版权声明 -->
+                <div v-if="content" class="h-32 card  rounded-box border border-base-200 space-y-2 p-6 ml-2 mr-2 mb-4"
+                  :class="{
+                    'bg-base-300': colorMode.value === 'dark',
+                    'bg-base-100': colorMode.value === 'light',
+                  }">
+                  <p>
+                    <Icon name="ep:user" size="20" class="mr-2" />文章作者: {{ userName }}
+                  </p>
+                  <p>
+                    <Icon name="ic:baseline-link" size="20" class="mr-2" />文章链接:
+                    <NuxtLink :to="url">{{ url }}</NuxtLink>
+                  </p>
+                  <p>
+                    <Icon name="ic:baseline-copyright" size="20" class="mr-2" />版权声明:
+                    本博客所有文章除特別声明外，均采用
+                    CC BY 4.0 许可协议。转载请注明来源 {{ userName }} !
+                  </p>
+                </div>
 
-              </div>
-            </div>
-            <div class=" bg-purple-300" style="width:15%">
-              <div v-if="docMenu.length > 0" class="docs-aside">
-                <span class="aside-title">目录</span>
-                <div class="aside-body">
-                  <ul class="aside-article-catalog">
-                    <li v-for="(item, index) in docMenu" :key="item.id" :class="`level_${item.level}`">
-                      <a :href="'#' + item.id" :class="{ active: active === index }"
-                        @click="handlerSroll($event, item.id, index)">{{ item.text }}</a>
-                    </li>
-                  </ul>
+                <!--文章标签 -->
+                <div class="ml-2 mr-2">
+                  <div v-if="content" v-for="(item, index) in content.tagsView " :key="index"
+                    class="badge badge-primary badge-lg badge-outline mr-4 mt-4 ">
+                    {{ item }}
+                  </div>
+                </div>
+
+                <!--文章翻页 -->
+                <div class="grid gap-8 sm:grid-cols-2 mt-4 mb-4 ml-2 mr-2">
+                  <NuxtLink v-if="back && back.ID > 0" target="_self"
+                    :to="localePath({ name: 'maintance', query: { id: back.ID } })"
+                    class="p-4 border border-base-300  rounded-md transition-all hover:shadow-md">
+                    <div class="flex items-center justify-start mb-2">
+                      <Icon name="ic:baseline-arrow-back" size="30" color="black" />
+                    </div>
+                    <h2 class="font-medium line-clamp-2 text-left text-lg mb-1" title="back.title">{{ back.title }}</h2>
+                    <p class="text-sm text-left line-clamp-2" title="back.summary">{{ back.summary }}</p>
+                  </NuxtLink>
+                  <NuxtLink v-if="after && after.ID > 0" target="_self"
+                    :to="localePath({ name: 'maintance', query: { id: after.ID } })"
+                    class="p-4 border  border-base-300  rounded-md transition-all hover:shadow-md">
+                    <div class="flex items-center justify-end mb-2">
+                      <Icon name="ic:baseline-arrow-forward" size="30" color="black" />
+                    </div>
+                    <h2 class="font-bold line-clamp-2 text-lg mb-1 text-right " title="after.title">{{ after.title }}</h2>
+                    <p class="text-sm line-clamp-2 text-right" title="after.summary">{{ after.summary }}</p>
+                  </NuxtLink>
                 </div>
               </div>
-              <div class="max-w-md mx-auto bg-white p-6 rounded-md shadow-md mt-4">
-                <h1 class="text-2xl font-bold mb-4">关于作者</h1>
+            </div>
+            <!-- 第一行 第四列 -->
 
-                <img src="author-avatar.jpg" alt="Author Avatar" class="w-full h-32 object-cover mb-4 rounded-md">
-
-                <p class="text-gray-700 mb-4">
-                  一叶一菩提，一码一世界。
+            <div class="" style="width:15%">
+              <div class="" :class="{
+                'bg-base-300': colorMode.value === 'dark',
+                'bg-base-100': colorMode.value === 'light',
+              }">
+                <!-- 锚点目录 -->
+                <div v-if="docMenu.length > 0" class="docs-aside rounded ">
+                  <span class="aside-title">目录</span>
+                  <div class="aside-body w-full">
+                    <ul class="aside-article-catalog">
+                      <li v-for="(item, index) in docMenu" :key="item.id" :class="`level_${item.level}`">
+                        <a :href="'#' + item.id" :class="{ active: active === index }"
+                          @click="handlerSroll($event, item.id, index)">{{ item.text }}</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <!-- 关于作者-->
+              <div class="max-w-md mx-auto  rounded-md shadow-md text-center mt-4" :class="{
+                'bg-base-300': colorMode.value === 'dark',
+                'bg-base-100': colorMode.value === 'light',
+              }">
+                <img src="/images/logo.png" alt="一码界" class="w-36 pt-4 mb-1 mx-auto">
+                <p class=" mb-4 mx-auto">
+                  一码一世界，一叶一菩提。<br />专注研发、专注产品、专注安全。
                 </p>
+                <!-- 微信公众号 -->
+                <img src="/images/wechat.jpg" alt="一码界微信公众号" class=" w-36 h-36 mx-auto">
+                <p class=" mb-4 mx-auto">扫码关注微信公众号</p>
 
-                <div class="flex items-center">
-                  <svg class="w-6 h-6 text-gray-500 mr-2" fill="none" stroke="currentColor" stroke-linecap="round"
-                    stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
-                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
-                  </svg>
-                  <p class="text-gray-700">Follow me on Twitter: <a href="https://twitter.com/your_twitter_handle"
-                      target="_blank" class="text-blue-500"> @your_twitter_handle</a></p>
+
+                <!-- 抖音 -->
+                <div class="flex items-center mt-2">
+                  <a href="https://www.douyin.com/user/MS4wLjABAAAA3TqFX9l-CLJJcIIRiYdfrEgUO94bKXrcWWmK29TCVTMubnc1P14lVQmocpQlgLrT?vid=7055900114459708709"
+                    target="_blank" class="mx-auto"> <img src="/images/douyin.png" alt="关注一码界抖音"
+                      class="w-36 h-36 mx-auto"><br />点击关注抖音</a>
                 </div>
-
-                <div class="flex items-center mt-4">
-                  <svg class="w-6 h-6 text-gray-500 mr-2" fill="none" stroke="currentColor" stroke-linecap="round"
-                    stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
-                    <path
-                      d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-3-13h6v6H9z">
-                    </path>
-                  </svg>
-                  <p class="text-gray-700">Visit my website: <a href="https://www.yourwebsite.com" target="_blank"
-                      class="text-blue-500"> www.yourwebsite.com</a></p>
+                <!-- 哔哩哔哩 -->
+                <div class="flex items-center mt-2">
+                  <a href="https://space.bilibili.com/364684263?spm_id_from=333.1007.0.0" target="_blank"
+                    class=" mx-auto"><img src="/images/bilibli.jpg" alt="关注一码界哔哩哔哩"
+                      class="w-36 h-36  mx-auto">点击关注哔哩哔哩</a>
                 </div>
-
-                <div class="flex items-center mt-4">
-                  <svg class="w-6 h-6 text-green-500 mr-2" fill="none" stroke="currentColor" stroke-linecap="round"
-                    stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
-                    <path
-                      d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h2v2h-2v-2zm0-10h2v6h-2v-6z">
-                    </path>
-                  </svg>
-                  <p class="text-gray-700">Follow my WeChat Public Account: [Your WeChat Public Account Name]</p>
-                </div>
-
-                <div class="flex items-center mt-4">
-                  <svg class="w-6 h-6 text-red-500 mr-2" fill="none" stroke="currentColor" stroke-linecap="round"
-                    stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
-                    <path
-                      d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-3 13h6v2H9v-2zm0-10h6v6H9v-6z">
-                    </path>
-                  </svg>
-                  <p class="text-gray-700">Subscribe to my Bilibili Channel: <a
-                      href="https://space.bilibili.com/your_bilibili_id" target="_blank"
-                      class="text-red-500">BilibiliID</a></p>
+                <!-- YouTube -->
+                <div class="flex items-center mt-2">
+                  <a href="https://www.youtube.com/channel/UCX2H1KciWcAW23FHJGGpMZA" target="_blank"
+                    class=" mx-auto mb-4"><img src="/images/youtube.png" alt="订阅一码界Youtube"
+                      class="w-36 h-36 mx-auto">点击关注youtube</a>
                 </div>
               </div>
-
             </div>
-            <div class=" bg-pink-300" style="width:15%">
-              5
+            <!-- 第一行 第五列 -->
+            <div class="" style="width:15%">
+
             </div>
           </div>
         </div>
 
-        <div class="w-full bg-purple-500">
+        <!--第二行 -->
+        <div class="w-full ">
           <!-- 第三层：5个div，每个div占一列宽度为10% 10% 60% 10% 10% -->
           <div class="flex">
-            <div class=" bg-red-500" style="width:15%">
-              1
+            <!--第二行 第一列 -->
+            <div class=" " style="width:15%">
+
             </div>
-            <div class=" bg-green-500" style="width:15%">
-              2
+            <!--第二行 第二列 -->
+            <div class=" " style="width:15%">
+
             </div>
-            <div class=" bg-blue-500" style="width:40%">
-              <div class="flex flex-wrap justify-center gap-x-8 gap-y-8">
+            <!--第二行 第三列 -->
+            <div class="" style="width:40%">
+              <div class="flex flex-wrap justify-center gap-x-8 gap-y-8 mb-10">
+                <!--猜你喜欢 -->
                 <div v-for="(item) in list">
                   <div class="card card-compact bg-base-100 shadow-lg top-5 border border-base-300"
-                    style="height: 24rem; width:26rem" :class="{
+                    style="height: 22rem; width:19rem" :class="{
                       'bg-base-300': colorMode.value === 'dark',
                       'bg-base-100': colorMode.value === 'light',
                     }">
@@ -383,7 +417,6 @@ const onScroll = () => {
                         </span></NuxtLink>
                     </div>
                     <div class="flex items-center mb-2 ml-2 ">
-                      <!-- 列1的内容 -->
                       <div class="flex items-center ">
                         <Icon name="ic:baseline-event-available" class="font-thin" color="black" />
                         <span class="ml-1 font-thin">{{ utils.dataFliter(item.createTime) }}</span>
@@ -403,53 +436,68 @@ const onScroll = () => {
                 </div>
               </div>
             </div>
-            <div class=" bg-purple-500" style="width:15%">
-              4
+            <!--第二行 第四列 -->
+            <div class=" " style="width:15%">
+
             </div>
-            <div class=" bg-pink-500" style="width:15%">
-              5
+            <!--第二行 第五列 -->
+            <div class=" " style="width:15%">
+
             </div>
           </div>
         </div>
 
-        <div class="w-full bg-green-700">
+
+        <!--第三行-->
+        <div class="w-full ">
           <!-- 第三层：5个div，每个div占一列宽度为10% 10% 60% 10% 10% -->
           <div class="flex">
-            <div class=" bg-red-700" style="width:15%">
-              1
+            <!--第三行 第一列 -->
+            <div class=" " style="width:15%">
+
             </div>
-            <div class=" bg-green-700" style="width:15%">
-              2
+            <!--第三行 第二列 -->
+            <div class=" " style="width:15%">
+
             </div>
-            <div class=" bg-blue-700" style="width:40%">
-              3
+            <!--第三行 第三列 -->
+            <div class=" " style="width:40%">
+
             </div>
-            <div class=" bg-purple-700" style="width:15%">
-              4
+            <!--第三行 第四列 -->
+            <div class=" " style="width:15%">
+
             </div>
-            <div class=" bg-pink-700" style="width:15%">
-              5
+            <!--第三行 第五列 -->
+            <div class=" " style="width:15%">
+
             </div>
           </div>
         </div>
 
-        <div class="w-full bg-blue-500">
+        <!--第四行-->
+        <div class="w-full ">
           <!-- 第三层：5个div，每个div占一列宽度为10% 10% 60% 10% 10% -->
           <div class="flex">
-            <div class=" bg-red-500" style="width:15%">
-              1
+            <!--第四行 第一列 -->
+            <div class=" " style="width:15%">
+
             </div>
-            <div class=" bg-green-500" style="width:15%">
-              2
+            <!--第四行 第二列 -->
+            <div class=" " style="width:15%">
+
             </div>
-            <div class=" bg-blue-500" style="width:40%">
-              3
+            <!--第四行 第三列 -->
+            <div class=" " style="width:40%">
+
             </div>
-            <div class=" bg-purple-500" style="width:15%">
-              4
+            <!--第四行 第四列 -->
+            <div class=" " style="width:15%">
+
             </div>
-            <div class=" bg-pink-500" style="width:15%">
-              5
+            <!--第四行 第五列 -->
+            <div class=" " style="width:15%">
+
             </div>
           </div>
         </div>
@@ -458,53 +506,92 @@ const onScroll = () => {
   </div>
 </template>
 
-<style scss>
+<style>
 /* 左边侧边栏样式 */
+/* 标题样式 */
 .docs-aside {
-  display: flex;
-  flex-direction: column;
-  bottom: 0;
-  z-index: 100;
-  width: 165px;
+  padding: 16px;
 }
 
-.docs-aside .aside-title {
-  border-bottom: 1px solid #d5dbe7;
-  font-size: 12px;
-  color: #999999;
-  line-height: 20px;
-  padding: 10px 0;
+.aside-title {
+  display: block;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 8px;
 }
 
-.docs-aside .aside-body {
-  flex: 1 1 100%;
-  padding: 10px 0;
-  overflow-y: auto;
+.aside-body {
+  margin-top: 8px;
 }
 
-.docs-aside .aside-article-catalog {
+.aside-article-catalog {
   list-style: none;
   padding: 0;
-  margin: 0;
 }
 
-.docs-aside .aside-article-catalog>li>a {
+.aside-article-catalog li {
+  margin-bottom: 8px;
+}
+
+.aside-article-catalog a {
+  text-decoration: none;
   display: block;
-  font-size: 14px;
-  line-height: 20px;
-  padding: 5px 0;
-  color: #818991;
+  padding: 4px 0;
+  transition: color 0.3s;
 }
 
-.docs-aside .aside-article-catalog>li>a:hover,
-.docs-aside .aside-article-catalog>li>a.active {
-  color: #1672FA;
+.aside-article-catalog a:hover {
+  color: #333;
+  /* 设置悬停时的字体颜色 */
 }
+
+.aside-article-catalog a.active {
+  font-weight: bold;
+}
+
+/* 不同标题级别的样式 */
+.level_1 {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.level_2 {
+  font-size: 13px;
+  font-weight: bold;
+  margin-left: 10px;
+  /* 通过缩进表示不同级别 */
+}
+
+.level_3 {
+  font-size: 12px;
+  font-weight: bold;
+  margin-left: 20px;
+}
+
+.level_4 {
+  font-size: 12px;
+  font-weight: bold;
+  margin-left: 30px;
+}
+
+.level_5 {
+  font-size: 12px;
+  font-weight: bold;
+  margin-left: 40px;
+}
+
+.level_6 {
+  font-size: 12px;
+  font-weight: bold;
+  margin-left: 50px;
+}
+
 
 
 /* 博客内容样式 */
 .editor-content-view {
   overflow-x: auto;
+  padding: 1rem;
 }
 
 .editor-content-view p,

@@ -2,7 +2,7 @@
  * @Author: freedom 957420317@qq.com
  * @Date: 2023-12-06 20:41:55
  * @LastEditors: freedom 957420317@qq.com
- * @LastEditTime: 2023-12-08 07:23:16
+ * @LastEditTime: 2023-12-11 07:56:14
  * @FilePath: \blog_before_vue3_nuxt\nuxt.config.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -66,5 +66,22 @@ export default defineNuxtConfig({
         css: true,
       }),
     ],
+  },
+  app: {
+    head: {
+      titleTemplate: "%s-一码界博客", // 用模板，具体参考官网
+      meta: [
+        { charset: "utf-8" },
+        { name: "renderer", content: "webkit", "data-n-head": true },
+        { "http-equiv": "X-UA-Compatible", content: "IE=edge,chrome=1" },
+        { name: "keywords", content: "编程记录,网络安全,工具软件,随笔杂谈" },
+        {
+          name: "description",
+          content:
+            "一码界博客，集前端、后端、数据库、运维、网络安全、产品开发技术于一身。实用指南、工具推荐，助力你的技术成长。",
+        },
+      ],
+      link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
+    },
   },
 });

@@ -2,7 +2,7 @@
  * @Author: freedom 957420317@qq.com
  * @Date: 2023-12-06 20:41:55
  * @LastEditors: freedom 957420317@qq.com
- * @LastEditTime: 2023-12-10 15:47:30
+ * @LastEditTime: 2023-12-11 06:52:59
  * @FilePath: \blog_before_vue3_nuxt\components\Build.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -22,12 +22,14 @@ let url = ref("")
 let userName = ref("");
 let docMenu = ref([]);
 let active = ref(0);
-let type = "技术"
+let type = "技术";
+let title = '';
 let list = ref([]);
 // 获取文章id
 if (route.query.id) {
   id = route.query.id
   type = route.query.type
+  title = route.query.title
 }
 
 // 猜你喜欢
@@ -54,7 +56,17 @@ const getTblContent = async (id) => {
   menus.value = count.value.data.menus;
   back.value = count.value.data.back;
   after.value = count.value.data.after;
-  getUserName(count.value.data.retblContent.authorId);
+  await getUserName(count.value.data.retblContent.authorId);
+  //根据文章内容动态设置 seo 标签内容
+  useHead({
+    title: `${content.value.title}`,
+    meta: [
+      { property: 'og:title', content: `${content.value.title}` },
+      { name: "keywords", content: `${content.value.tagsView}` },
+      { name: "description", content: `${content.value.summary}` },
+      { name: "author", content: `${userName.value}` }
+    ],
+  })
 }
 
 // 获取用户名称
@@ -77,9 +89,9 @@ onMounted(async () => {
   window.addEventListener('scroll', onScroll)
   getList();
   window.scrollTo({
-        top: 0,
-        behavior: 'smooth' // 如果要平滑滚动，请添加这个选项
-      });
+    top: 0,
+    behavior: 'smooth' // 如果要平滑滚动，请添加这个选项
+  });
 })
 onUpdated(() => {
   // 代码高亮
@@ -96,18 +108,19 @@ useHead({
     "data-prismjs-copy": "复制",
     "data-prismjs-copy-error": "复制出错",
     "data-prismjs-copy-success": "已复制"
-  }
+  },
 })
 // 当路由参数发生变化 重新获取文章内容
 watch(() => route.query, (newQuery, oldQuery) => {
   if (newQuery.id !== oldQuery.id) {
     // 当 id 参数发生变化时执行你的逻辑
     id = newQuery.id;
+    title = newQuery.title
     getTblContent(id);
     window.scrollTo({
-        top: 0,
-        behavior: 'smooth' // 如果要平滑滚动，请添加这个选项
-      });
+      top: 0,
+      behavior: 'smooth' // 如果要平滑滚动，请添加这个选项
+    });
   }
 });
 

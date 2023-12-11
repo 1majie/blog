@@ -2,7 +2,7 @@
  * @Author: freedom 957420317@qq.com
  * @Date: 2023-12-06 20:41:55
  * @LastEditors: freedom 957420317@qq.com
- * @LastEditTime: 2023-12-10 14:41:29
+ * @LastEditTime: 2023-12-11 07:01:17
  * @FilePath: \blog_before_vue3_nuxt\components\List.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -30,6 +30,13 @@ const getList = async (currentPage, type) => {
   list.value = count.value.data.result.list;
   beforePage = count.value.data.beforePage;
   afterPage = count.value.data.nextPage;
+  useHead({
+    title: `${type}`,
+    meta: [
+      { property: 'og:title', content: `${type}` },
+      { name: "keywords", content: `${type}` },
+    ],
+  })
 }
 getList(page, type);
 watch(
@@ -45,6 +52,7 @@ watch(
 onMounted(() => {
   colorMode.value = useColorMode();
 });
+
 </script>
 
 <template>
@@ -57,19 +65,19 @@ onMounted(() => {
             'bg-base-100': colorMode.value === 'light',
           }">
           <div class="mx-auto">
-            <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type } })"><img
+            <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type,title:item.title} })"><img
                 :src="baseUrl + '/' + item.img" class="aspect-video w-full object-cover rounded" :alt="item.title" />
             </NuxtLink>
           </div>
           <div class="mt-2 ml-2">
-            <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type } })">
+            <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type,title:item.title } })">
               <h3 class="font-bold" :title="item.title">
                 {{ item.title }}
               </h3>
             </NuxtLink>
           </div>
           <div class="ml-2 h-20 mb-2">
-            <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type } })"><span
+            <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type,title:item.title } })"><span
                 class="line-clamp-2" :title="item.summary">{{ item.summary }}
               </span></NuxtLink>
           </div>

@@ -71,14 +71,14 @@ onMounted(() => {
           </div>
           <div class="mt-2 ml-2">
             <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type,title:item.title } })">
-              <h3 class="font-bold" :title="item.title">
+              <h3 class="font-bold hover:text-blue-500" :title="item.title">
                 {{ item.title }}
               </h3>
             </NuxtLink>
           </div>
           <div class="ml-2 h-20 mb-2">
             <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type,title:item.title } })"><span
-                class="line-clamp-2" :title="item.summary">{{ item.summary }}
+                class="line-clamp-2 hover:text-blue-500" :title="item.summary">{{ item.summary }}
               </span></NuxtLink>
           </div>
           <div class="flex items-center mb-2 ml-2 ">
@@ -106,7 +106,7 @@ onMounted(() => {
       <div class="join grid grid-cols-2">
         <NuxtLink v-if="beforePage >= 1" target="_self"
           :to="localePath({ name: 'index', query: { 'type': type, 'page': beforePage } })"
-          class="py-2 px-4 rounded-md transition-all" :class="{
+          class="py-2 px-4 rounded-md transition-all hover:text-blue-500" :class="{
             'bg-base-300': colorMode.value === 'dark',
             'bg-base-100': colorMode.value === 'light',
           }">
@@ -114,7 +114,7 @@ onMounted(() => {
         </NuxtLink>
         <NuxtLink v-if="afterPage >= 2" target="_self"
           :to="localePath({ name: 'index', query: { 'type': type, 'page': afterPage } })"
-          class="py-2 ml-4 px-4 rounded-md transition-all" :class="{
+          class="py-2 ml-4 px-4 rounded-md transition-all hover:text-blue-500" :class="{
             'bg-base-300  ': colorMode.value === 'dark',
             'bg-base-100': colorMode.value === 'light',
           }">

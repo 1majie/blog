@@ -2,7 +2,7 @@
  * @Author: freedom 957420317@qq.com
  * @Date: 2023-12-06 20:41:55
  * @LastEditors: freedom 957420317@qq.com
- * @LastEditTime: 2023-12-11 06:52:59
+ * @LastEditTime: 2023-12-12 23:03:08
  * @FilePath: \blog_before_vue3_nuxt\components\Build.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -216,11 +216,11 @@ const onScroll = () => {
               }">
                 <ul class="bg-base-100 p-2 rounded ">
                   <li v-if="content" v-for="(item, index) in menus" class="mb-4">
-                    <h4 class="text-2xl mb-2 border-b border-base-300 pb-2">
+                    <h3 class="mb-2 border-b border-base-300 pb-2">
                       {{ item.subset }}
-                    </h4>
+                    </h3>
                     <ul>
-                      <li v-for="tblContent in item.tblContents" :key="tblContent.ID" class="mb-2">
+                      <li v-for="tblContent in item.tblContents" :key="tblContent.ID" class="mb-1 hover:text-blue-500">
                         <NuxtLink target="_self"
                           :to="localePath({ name: 'maintance', query: { id: tblContent.ID, type: type } })" class=" ml-4">
                           {{ tblContent.title }}
@@ -300,7 +300,7 @@ const onScroll = () => {
                 <!--文章标签 -->
                 <div class="ml-2 mr-2">
                   <div v-if="content" v-for="(item, index) in content.tagsView " :key="index"
-                    class="badge badge-primary badge-lg badge-outline mr-4 mt-4 ">
+                    class="badge text-blue-500 badge-lg badge-outline mr-4 mt-4 ">
                     {{ item }}
                   </div>
                 </div>
@@ -309,18 +309,18 @@ const onScroll = () => {
                 <div class="grid gap-8 sm:grid-cols-2 mt-4 mb-4 ml-2 mr-2">
                   <NuxtLink v-if="back && back.ID > 0" target="_self"
                     :to="localePath({ name: 'maintance', query: { id: back.ID } })"
-                    class="p-4 border border-base-300  rounded-md transition-all hover:shadow-md">
+                    class="p-4 border border-base-300  rounded-md transition-all hover:text-blue-500">
                     <div class="flex items-center justify-start mb-2">
-                      <Icon name="ic:baseline-arrow-back" size="30" color="black" />
+                      <Icon name="ic:baseline-arrow-back" size="30" class="hover:text-blue-500"/>
                     </div>
                     <h2 class="font-medium line-clamp-2 text-left text-lg mb-1" title="back.title">{{ back.title }}</h2>
                     <p class="text-sm text-left line-clamp-2" title="back.summary">{{ back.summary }}</p>
                   </NuxtLink>
                   <NuxtLink v-if="after && after.ID > 0" target="_self"
                     :to="localePath({ name: 'maintance', query: { id: after.ID } })"
-                    class="p-4 border  border-base-300  rounded-md transition-all hover:shadow-md">
+                    class="p-4 border  border-base-300  rounded-md transition-all hover:text-blue-500">
                     <div class="flex items-center justify-end mb-2">
-                      <Icon name="ic:baseline-arrow-forward" size="30" color="black" />
+                      <Icon name="ic:baseline-arrow-forward" size="30"  class="hover:text-blue-500" />
                     </div>
                     <h2 class="font-bold line-clamp-2 text-lg mb-1 text-right " title="after.title">{{ after.title }}</h2>
                     <p class="text-sm line-clamp-2 text-right" title="after.summary">{{ after.summary }}</p>
@@ -419,14 +419,14 @@ const onScroll = () => {
                     </div>
                     <div class="mt-2 ml-2">
                       <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type } })">
-                        <h3 class="font-bold" :title="item.title">
+                        <h3 class="font-bold hover:text-blue-500" :title="item.title">
                           {{ item.title }}
                         </h3>
                       </NuxtLink>
                     </div>
                     <div class="ml-2 h-20 mb-2">
                       <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type } })"><span
-                          class="line-clamp-2" :title="item.summary">{{ item.summary }}
+                          class="line-clamp-2 hover:text-blue-500" :title="item.summary">{{ item.summary }}
                         </span></NuxtLink>
                     </div>
                     <div class="flex items-center mb-2 ml-2 ">
@@ -520,7 +520,7 @@ const onScroll = () => {
 </template>
 
 <style>
-/* 左边侧边栏样式 */
+/* 右边锚点侧边栏样式 */
 /* 标题样式 */
 .docs-aside {
   padding: 16px;
@@ -549,12 +549,11 @@ const onScroll = () => {
 .aside-article-catalog a {
   text-decoration: none;
   display: block;
-  padding: 4px 0;
   transition: color 0.3s;
 }
 
 .aside-article-catalog a:hover {
-  color: #333;
+  color: #3B82F6;
   /* 设置悬停时的字体颜色 */
 }
 

@@ -8,15 +8,15 @@
  */
 
 export default defineSitemapEventHandler(async () => {
-  // fetch data directly in the correct type
+  // 通过后台地址获取所有页面
   const pages = await $fetch<{ pages: { slug: string; title: string } }>(
     "http://localhost:8888/base/getTblContentAll"
   );
+  // 遍历添加地址到sitemap 目前不支持英文，配置转换后，？后的内容消失了
   let arr = [];
   const p = pages.data.result;
   for (let i = 0; i < p.length; i++) {
     let loc = "/maintance?id=" + p[i].ID + "&type=VPS&title=" + p[i].title;
-    // map URLS as needed
     arr.push({ 
       loc: loc,
       lastmod:p[i].UpdatedAt,

@@ -2,7 +2,7 @@
  * @Author: freedom 957420317@qq.com
  * @Date: 2023-12-06 20:41:55
  * @LastEditors: freedom 957420317@qq.com
- * @LastEditTime: 2023-12-11 07:56:14
+ * @LastEditTime: 2023-12-12 20:46:10
  * @FilePath: \blog_before_vue3_nuxt\nuxt.config.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     "@nuxtjs/google-fonts",
     "nuxt-icon", //https://icones.js.org/ icon图标地址
     "@nuxtjs/color-mode",
+    "nuxt-simple-sitemap",
   ],
   colorMode: {
     preference: "system", // default value of $colorMode.preference
@@ -83,5 +84,13 @@ export default defineNuxtConfig({
       ],
       link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
     },
+  }, 
+  site: {
+    url: 'https://www.1majie.com',
   },
+  sitemap: {
+    sources: [
+      '/api/urls',
+    ]
+  }
 });

@@ -58,8 +58,10 @@ const closeDropdown = () => {
         <label tabindex="0" class="btn btn-ghost lg:hidden" @click="toggleDropdown">
           <Icon name="ep:menu" size="26" color="black" />
         </label>
-        <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow rounded-box w-52 bg-white"
-          v-show="isDropdownOpen" @click="closeDropdown">
+        <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow rounded-box w-52" :class="{
+          'bg-base-300': colorMode.value === 'dark',
+          'bg-base-100': colorMode.value === 'light',
+        }" v-show="isDropdownOpen" @click="closeDropdown">
           <li>
             <NuxtLink :to="localePath({ name: 'index', query: { type: '技术' } })"
               class="hover:text-blue-500  hover:bg-transparent" @click="closeDropdown">{{

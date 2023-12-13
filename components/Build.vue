@@ -2,7 +2,7 @@
  * @Author: freedom 957420317@qq.com
  * @Date: 2023-12-06 20:41:55
  * @LastEditors: freedom 957420317@qq.com
- * @LastEditTime: 2023-12-13 07:26:56
+ * @LastEditTime: 2023-12-13 21:11:36
  * @FilePath: \blog_before_vue3_nuxt\components\Build.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -207,20 +207,20 @@ const onScroll = () => {
             </div>
             <!-- 第一行 第二列 -->
             <div class="w-full sm:w-1/6 md:w-1/6 lg:w-1/6 xl:w-1/6 hidden md:block">
-              <div v-if="menus && menus.length > 0 && content" class="border border-base-300" :class="{
-                'bg-base-300': colorMode.value === 'dark',
-                'bg-base-100': colorMode.value === 'light',
-              }">
-                <ul class="bg-base-100 p-2 rounded">
+              <div v-if="menus && menus.length > 0 && content" class="border border-base-300">
+                <ul class="bg-base-100 p-2 rounded" :class="{
+                  'bg-base-300': colorMode.value === 'dark',
+                  'bg-base-100': colorMode.value === 'light',
+                }">
                   <li v-if="content" v-for="(item, index) in menus" class="mb-4">
                     <h3 class="mb-2 border-b border-base-300 pb-2">
                       {{ item.subset }}
                     </h3>
                     <ul>
-                      <li v-for="tblContent in item.tblContents" :key="tblContent.ID" class="mb-1 hover:text-blue-500">
+                      <li v-for="tblContent in item.tblContents" :key="tblContent.ID" class="mb-1">
                         <NuxtLink target="_self"
                           :to="localePath({ name: 'maintance', query: { id: tblContent.ID, type: type } })"
-                          class=" ml-4 active:text-blue-700">
+                          class=" ml-4  hover:text-blue-500 ">
                           {{ tblContent.title }}
                         </NuxtLink>
                       </li>
@@ -271,11 +271,10 @@ const onScroll = () => {
                 </div>
                 <hr v-if="content" class="mt-4 mb-4 ml-2 mr-2" />
                 <!-- 文章作者 文章链接 版权声明 -->
-                <div v-if="content" class=" card  rounded-box border border-base-200 space-y-2 p-6 ml-2 mr-2 mb-4"
-                  :class="{
-                    'bg-base-300': colorMode.value === 'dark',
-                    'bg-base-100': colorMode.value === 'light',
-                  }">
+                <div v-if="content" class=" card  rounded-box border border-base-200 space-y-2 p-6 ml-2 mr-2 mb-4" :class="{
+                  'bg-base-300': colorMode.value === 'dark',
+                  'bg-base-100': colorMode.value === 'light',
+                }">
                   <p>
                     <Icon name="ep:user" size="20" class="mr-2" />文章作者: {{ userName }}
                   </p>
@@ -299,7 +298,10 @@ const onScroll = () => {
                 <div class="grid gap-8 sm:grid-cols-2 mt-4 mb-4 ml-2 mr-2">
                   <NuxtLink v-if="back && back.ID > 0" target="_self"
                     :to="localePath({ name: 'maintance', query: { id: back.ID } })"
-                    class="p-4 border border-base-300  rounded-md transition-all hover:text-blue-500">
+                    class="p-4 border   rounded-md transition-all hover:text-blue-500" :class="{
+                      'border-base-100': colorMode.value === 'dark',
+                      'border-base-300': colorMode.value === 'light',
+                    }">
                     <div class="flex items-center justify-start mb-2">
                       <Icon name="ic:baseline-arrow-back" size="30" class="hover:text-blue-500" />
                     </div>
@@ -309,7 +311,10 @@ const onScroll = () => {
                   </NuxtLink>
                   <NuxtLink v-if="after && after.ID > 0" target="_self"
                     :to="localePath({ name: 'maintance', query: { id: after.ID } })"
-                    class="p-4 border  border-base-300  rounded-md transition-all hover:text-blue-500">
+                    class="p-4 border   rounded-md transition-all hover:text-blue-500" :class="{
+                      'border-base-100': colorMode.value === 'dark',
+                      'border-base-300': colorMode.value === 'light',
+                    }">
                     <div class="flex items-center justify-end mb-2">
                       <Icon name="ic:baseline-arrow-forward" size="30" class="hover:text-blue-500" />
                     </div>
@@ -340,9 +345,10 @@ const onScroll = () => {
                 </div>
               </div>
               <!-- 关于作者-->
-              <div class="max-w-md mx-auto  rounded-md shadow-md text-center mt-4" :class="{
+              <div class="max-w-md mx-auto  rounded-md shadow-md text-center" :class="{
                 'bg-base-300': colorMode.value === 'dark',
                 'bg-base-100': colorMode.value === 'light',
+                'mt-4': docMenu.length > 0,
               }">
                 <img src="/images/logo.png" alt="一码界" class="w-36 pt-4 mb-1 mx-auto">
                 <p class=" mb-4 mx-auto">
@@ -419,6 +425,7 @@ const onScroll = () => {
   color: #3B82F6;
   /* 设置悬停时的字体颜色 */
 }
+
 /* 不同标题级别的样式 */
 .level_1 a.active {
   font-size: 14px;

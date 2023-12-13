@@ -2,7 +2,7 @@
  * @Author: freedom 957420317@qq.com
  * @Date: 2023-12-06 20:41:55
  * @LastEditors: freedom 957420317@qq.com
- * @LastEditTime: 2023-12-13 22:20:13
+ * @LastEditTime: 2023-12-14 06:40:19
  * @FilePath: \blog_before_vue3_nuxt\components\Build.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -25,6 +25,8 @@ let active = ref(0);
 let type = "技术";
 let list = ref([]);
 let isOpen = ref(false);
+let isPayOpen = ref(false);
+
 // 获取文章id
 if (route.query.id) {
   id = route.query.id
@@ -270,6 +272,17 @@ const onScroll = () => {
                 <!-- 文章内容 -->
                 <div v-if="content" class="editor-content-view" v-html="content.content">
                 </div>
+                <div v-if="content" class="flex justify-center items-center">
+                  <button @click="isPayOpen = true"
+                    class="bg-blue-500 text-white font-bold py-2 px-4 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue active:bg-blue-800">
+                    赞赏
+                  </button>
+                  <div v-show="isPayOpen" @click.away="isPayOpen = false"
+                    class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
+                    <img src="/images/alipay.jpg" alt="支付宝支付" class="object-contain h-1/3">
+                    <img src="/images/weipay.jpg" alt="微信支付" class="object-contain h-1/3 ">
+                  </div>
+                </div>
                 <hr v-if="content" class="mt-4 mb-4 ml-2 mr-2" />
                 <!-- 文章作者 文章链接 版权声明 -->
                 <div v-if="content" class=" card  rounded-box border border-base-200 space-y-2 p-6 ml-2 mr-2 mb-4" :class="{
@@ -332,12 +345,12 @@ const onScroll = () => {
                 'bg-base-300': colorMode.value === 'dark',
                 'bg-base-100': colorMode.value === 'light',
               }">
-                <div class=" border" :class="{
+                <div v-if="docMenu.length > 0" class=" border" :class="{
                   'border-base-100': colorMode.value === 'dark',
                   'border-base-300': colorMode.value === 'light',
                 }">
                   <!-- 锚点目录 -->
-                  <div v-if="docMenu.length > 0" class="docs-aside rounded ">
+                  <div  class="docs-aside rounded ">
                     <span class="aside-title">目录</span>
                     <div class="aside-body w-full">
                       <ul class="aside-article-catalog">
@@ -351,7 +364,7 @@ const onScroll = () => {
                 </div>
               </div>
               <!-- 关于作者-->
-              <div class="max-w-md mx-auto  rounded-md shadow-md text-center" :class="{
+              <div v-if="content" class="max-w-md mx-auto  rounded-md shadow-md text-center" :class="{
                 'bg-base-300': colorMode.value === 'dark',
                 'bg-base-100': colorMode.value === 'light',
                 'mt-4': docMenu.length > 0,
@@ -364,8 +377,8 @@ const onScroll = () => {
                   <div class="flex items-center">
                     <!-- 微信公众号 -->
                     <a @click="isOpen = true" class="mx-auto" href="#" title="关注微信公众号">
-                      <svg class=" w-14 h-14 mx-auto" title="关注微信公众号"
-                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 111.36600000000001 90">
+                      <svg class=" w-14 h-14 mx-auto" title="关注微信公众号" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 111.36600000000001 90">
                         <linearGradient id="a" x1="50.056%" x2="50.056%" y1="94.15%" y2=".437%">
                           <stop offset="0" stop-color="#05cd66" />
                           <stop offset="1" stop-color="#61f380" />
@@ -393,7 +406,7 @@ const onScroll = () => {
                       </svg>
                     </a>
 
-                    <!-- 图片模态框 -->
+                    <!-- 微信公众号图片模态框 -->
                     <div v-show="isOpen" @click.away="isOpen = false"
                       class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
                       <img src="/images/wechat.jpg" alt="Modal Image" class="max-w-full max-h-full">

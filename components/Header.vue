@@ -2,6 +2,7 @@
 const { t, locale, setLocale } = useI18n();
 let colorMode = ref({});
 const selectedLocale = ref(locale.value);
+let inputValue = ref("");
 let themes = [
   { key: "light", name: t("theme.light") },
   { key: "dark", name: t("theme.dark") },
@@ -44,6 +45,17 @@ const toggleDropdown = () => {
 
 const closeDropdown = () => {
   isDropdownOpen.value = false;
+};
+
+const router = useRouter();
+const handleEnter = () => {
+  // 获取输入框的值
+  const value = inputValue.value.trim();
+
+  if (value) {
+    // 跳转到带参数的路由
+    router.push({ path: '/', query: { searchValue: value } });
+  }
 };
 </script>
 
@@ -140,8 +152,13 @@ const closeDropdown = () => {
         </li>
       </ul>
     </div>
+
     <div class="navbar-end gap-4">
-      <select class="select select-sm focus:outline-0 text-center pl-0" v-model="selectedLocale" @change="changeLocale">
+      <div class="form-control">
+        <input v-model="inputValue" @keydown.enter="handleEnter" type="text" placeholder="搜索"
+          class="input input-bordered w-24 md:w-auto " />
+      </div>
+      <select class="select select-sm focus:outline-0 text-center pl-0 " v-model="selectedLocale" @change="changeLocale">
         <option v-for="lang of languages" :value="lang.key" :key="lang.key">
           {{ lang.name }}
         </option>

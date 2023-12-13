@@ -17,16 +17,21 @@ let afterPage = 1;
 let list = ref([]);
 let pageSize = 2;
 let type = "技术";
+let searchValue = '';
 const route = useRoute()
-if (route.query.type) {
-  type = route.query.type
+if (route.query) {
+  type = route.query.type || ''
   page = route.query.page || 1
+  searchValue = route.query.searchValue || ''
+  if (searchValue) {
+    type = ''
+  }
 }
-const getList = async (currentPage, type) => {
+const getList = async (currentPage, type, searchValue) => {
   // 防止客户端执行时，直接返回null
   await nextTick()
   page = currentPage
-  let { data: count } = await useFetch(baseUrl + '/base/getTblContentList?page=' + page + '&pageSize=' + pageSize + '&type=' + type)
+  let { data: count } = await useFetch(baseUrl + '/base/getTblContentList?page=' + page + '&pageSize=' + pageSize + '&type=' + type + '&title=' + searchValue)
   list.value = count.value.data.result.list;
   beforePage = count.value.data.beforePage;
   afterPage = count.value.data.nextPage;
@@ -38,15 +43,19 @@ const getList = async (currentPage, type) => {
     ],
   })
 }
-getList(page, type);
+getList(page, type, searchValue);
 watch(
   () => route.query, // 监听 $route.query.param 的变化
   async (newType) => {
     // 当切换菜单时，分页重置为1
     let currentPage = route.query.page || 1
-    type = route.query.type
+    type = route.query.type || ''
+    searchValue = route.query.searchValue || ''
+    if (searchValue) {
+      type = ''
+    }
     // 在路由参数变化时重新加载数据
-    getList(currentPage, type);
+    getList(currentPage, type, searchValue);
   }
 );
 onMounted(() => {

@@ -2,7 +2,7 @@
  * @Author: freedom 957420317@qq.com
  * @Date: 2023-12-06 20:41:55
  * @LastEditors: freedom 957420317@qq.com
- * @LastEditTime: 2023-12-13 21:11:36
+ * @LastEditTime: 2023-12-13 21:28:03
  * @FilePath: \blog_before_vue3_nuxt\components\Build.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -381,6 +381,97 @@ const onScroll = () => {
             <!-- 第一行 第五列 -->
             <div class="w-full sm:w-1/6 md:w-1/6 lg:w-1/6 xl:w-1/6">
             </div>
+          </div>
+
+          <!-- 第二行 -->
+          <div class="flex flex-wrap">
+            <!-- 第二行 第一列 -->
+            <div class="w-full sm:w-1/6 md:w-1/6 lg:w-1/6 xl:w-1/6">
+              <!-- 未更改的部分 -->
+            </div>
+            <!-- 第二行 第二列 -->
+            <div class="w-full sm:w-1/6 md:w-1/6 lg:w-1/6 xl:w-1/6 hidden md:block">
+            </div>
+            <!-- 第二行 第三列 -->
+            <div class="w-full sm:w-2/5 md:w-2/5 lg:w-2/5 xl:w-2/5 bg-base-100 pl-4 pr-4 pb-2">
+              <div class="flex flex-wrap justify-center gap-x-8 gap-y-8 mb-10">
+                <!--猜你喜欢 -->
+                <div v-for="(item) in list">
+                  <div class="card card-compact bg-base-100 shadow-lg top-5 border border-base-300"
+                    style="height: 22rem; width:19rem" :class="{
+                      'bg-base-300': colorMode.value === 'dark',
+                      'bg-base-100': colorMode.value === 'light',
+                    }">
+                    <div class="mx-auto">
+                      <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type } })"><img
+                          :src="baseUrl + '/' + item.img" class="aspect-video w-full object-cover rounded"
+                          :alt="item.title" />
+                      </NuxtLink>
+                    </div>
+                    <div class="mt-2 ml-2">
+                      <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type } })">
+                        <h3 class="font-bold hover:text-blue-500" :title="item.title">
+                          {{ item.title }}
+                        </h3>
+                      </NuxtLink>
+                    </div>
+                    <div class="ml-2 h-20 mb-2">
+                      <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type } })"><span
+                          class="line-clamp-2 hover:text-blue-500" :title="item.summary">{{ item.summary }}
+                        </span></NuxtLink>
+                    </div>
+                    <div class="flex items-center mb-2 ml-2 ">
+                      <div class="flex items-center ">
+                        <Icon name="ic:baseline-event-available" class="font-thin" color="black" />
+                        <span class="ml-1 font-thin">{{ utils.dataFliter(item.createTime) }}</span>
+                      </div>
+
+                      <div class="flex items-center flex-grow">
+                        <Icon name="ic:baseline-preview" class="font-thin ml-4" color="black" />
+                        <span class="ml-1 font-thin">{{ item.viewNum }}</span>
+                      </div>
+
+                      <div class="flex items-center ml-auto mr-2">
+                        <Icon name="ic:baseline-article" class="font-thin" color="black" />
+                        <span class="ml-1 font-thin">{{ item.type }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- 第二行 第四列 -->
+            <div class="w-full sm:w-1/6 md:w-1/6 lg:w-1/6 xl:w-1/6 hidden md:block">
+
+            </div>
+            <!-- 第二行 第五列 -->
+            <div class="w-full sm:w-1/6 md:w-1/6 lg:w-1/6 xl:w-1/6">
+            </div>
+
+          </div>
+
+          <!-- 第三行 -->
+          <div class="flex flex-wrap">
+            <!-- 第三行 第一列 -->
+            <div class="w-full sm:w-1/6 md:w-1/6 lg:w-1/6 xl:w-1/6">
+              <!-- 未更改的部分 -->
+            </div>
+            <!-- 第三行 第二列 -->
+            <div class="w-full sm:w-1/6 md:w-1/6 lg:w-1/6 xl:w-1/6 hidden md:block">
+
+            </div>
+            <!-- 第三行 第三列 -->
+            <div class="w-full sm:w-2/5 md:w-2/5 lg:w-2/5 xl:w-2/5 bg-base-100 pl-4 pr-4 pb-2">
+
+            </div>
+            <!-- 第三行 第四列 -->
+            <div class="w-full sm:w-1/6 md:w-1/6 lg:w-1/6 xl:w-1/6 hidden md:block">
+
+            </div>
+            <!-- 第三行 第五列 -->
+            <div class="w-full sm:w-1/6 md:w-1/6 lg:w-1/6 xl:w-1/6">
+            </div>
+
           </div>
         </div>
       </div>

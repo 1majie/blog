@@ -36,6 +36,15 @@ const changeLocale = () => {
 onMounted(() => {
   colorMode.value = useColorMode();
 });
+const isDropdownOpen = ref(false);
+
+const toggleDropdown = () => {
+  isDropdownOpen.value = !isDropdownOpen.value;
+};
+
+const closeDropdown = () => {
+  isDropdownOpen.value = false;
+};
 </script>
 
 <template>
@@ -46,13 +55,14 @@ onMounted(() => {
     }">
     <div class="navbar-start">
       <div class="dropdown">
-        <label tabindex="0" class="btn btn-ghost lg:hidden">
+        <label tabindex="0" class="btn btn-ghost lg:hidden" @click="toggleDropdown">
           <Icon name="ep:menu" size="26" color="black" />
         </label>
-        <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow rounded-box w-52">
+        <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow rounded-box w-52 bg-white"
+          v-show="isDropdownOpen" @click="closeDropdown">
           <li>
             <NuxtLink :to="localePath({ name: 'index', query: { type: '技术' } })"
-              class="hover:text-blue-500  hover:bg-transparent">{{
+              class="hover:text-blue-500  hover:bg-transparent" @click="closeDropdown">{{
                 $t("menu.home") }}</NuxtLink>
           </li>
           <li>
@@ -135,12 +145,13 @@ onMounted(() => {
         </option>
       </select>
       <select class="select select-sm focus:outline-0 text-center pl-0" v-model="colorMode.preference">
-      <option v-for="theme of themes" :value="theme.key" :key="theme.key"
-        :selected="theme.key === colorMode.preference">
-        {{ theme.name }}
-      </option>
-    </select>
+        <option v-for="theme of themes" :value="theme.key" :key="theme.key"
+          :selected="theme.key === colorMode.preference">
+          {{ theme.name }}
+        </option>
+      </select>
+    </div>
   </div>
-</div></template>
+</template>
 
 <style scoped></style>

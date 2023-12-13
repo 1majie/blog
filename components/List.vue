@@ -2,7 +2,7 @@
  * @Author: freedom 957420317@qq.com
  * @Date: 2023-12-06 20:41:55
  * @LastEditors: freedom 957420317@qq.com
- * @LastEditTime: 2023-12-11 07:01:17
+ * @LastEditTime: 2023-12-13 07:42:14
  * @FilePath: \blog_before_vue3_nuxt\components\List.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -56,7 +56,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="mt-16 lg:mb-32 sm:mb-44">
+  <div class="mt-16 mb-24">
     <div class="flex flex-wrap justify-center gap-x-8 gap-y-8">
       <div v-for="(item) in list">
         <div class="card card-compact bg-base-100 shadow-lg top-5 border border-base-300"
@@ -65,19 +65,19 @@ onMounted(() => {
             'bg-base-100': colorMode.value === 'light',
           }">
           <div class="mx-auto">
-            <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type,title:item.title} })"><img
+            <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type } })"><img
                 :src="baseUrl + '/' + item.img" class="aspect-video w-full object-cover rounded" :alt="item.title" />
             </NuxtLink>
           </div>
           <div class="mt-2 ml-2">
-            <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type,title:item.title } })">
+            <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type } })">
               <h3 class="font-bold hover:text-blue-500" :title="item.title">
                 {{ item.title }}
               </h3>
             </NuxtLink>
           </div>
           <div class="ml-2 h-20 mb-2">
-            <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type,title:item.title } })"><span
+            <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type } })"><span
                 class="line-clamp-2 hover:text-blue-500" :title="item.summary">{{ item.summary }}
               </span></NuxtLink>
           </div>
@@ -100,9 +100,9 @@ onMounted(() => {
           </div>
         </div>
       </div>
-    </div>
 
-    <div v-if="list.length > 0" class="flex flex-wrap justify-center gap-x-8 gap-y-8 mt-10">
+    </div>
+    <div v-if="list.length > 0" class="flex flex-wrap justify-center gap-x-8 gap-y-8 mt-8">
       <div class="join grid grid-cols-2">
         <NuxtLink v-if="beforePage >= 1" target="_self"
           :to="localePath({ name: 'index', query: { 'type': type, 'page': beforePage } })"
@@ -122,6 +122,7 @@ onMounted(() => {
         </NuxtLink>
       </div>
     </div>
+
 
   </div>
 </template>

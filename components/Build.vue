@@ -2,7 +2,7 @@
  * @Author: freedom 957420317@qq.com
  * @Date: 2023-12-06 20:41:55
  * @LastEditors: freedom 957420317@qq.com
- * @LastEditTime: 2023-12-14 06:40:19
+ * @LastEditTime: 2023-12-15 07:54:18
  * @FilePath: \blog_before_vue3_nuxt\components\Build.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -10,6 +10,10 @@
 import utils from '~/utils/util';
 import Prism from 'prismjs'
 import { ref, nextTick } from 'vue';
+//支持markdown
+import { MdPreview, MdCatalog } from 'md-editor-v3';
+import 'md-editor-v3/lib/preview.css';
+let scrollElement = ref();
 const baseUrl = utils.getBaseUrl();
 let colorMode = ref({});
 let content = ref();
@@ -102,6 +106,7 @@ onUpdated(() => {
 
 onUnmounted(() => {
   window.removeEventListener('scroll', onScroll)
+  scrollElement.value = document.documentElement;
 });
 // 修改代码复制文字为中文
 useHead({
@@ -128,7 +133,11 @@ watch(() => route.query, (newQuery, oldQuery) => {
 const initArt = () => {
   let markMenu = []
   setTimeout(() => {
-    const articleDom = document.querySelector('.editor-content-view')
+    let articleDom = document.querySelector('.editor-content-view')
+    if (articleDom === undefined || articleDom === null) {
+      articleDom = document.querySelector('.md-editor-preview')
+    }
+
     if (articleDom) {
       for (let ele of articleDom.children) {
         let i = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].indexOf(ele.tagName.toLowerCase())
@@ -152,7 +161,11 @@ const initArt = () => {
 // 处理滚动事件
 const handlerSroll = (e, id) => {
   //由于存在头部的关系,会挡住标题,所以还需计算滚动头部的高度
-  const element = document.querySelector(`.page-header`);
+  // let element = document.querySelector(`.page-header`);
+  let element = document.querySelector('.editor-content-view')
+  if (element === undefined || element === null) {
+    element = document.querySelector('.md-editor-preview')
+  }
   const targetDom = document.querySelector(`#${id}`);
   //测试到火狐浏览器存在锚点定位的问题,使用scrollIntoView的方法
   if (navigator.userAgent.indexOf("Firefox") > 0) {
@@ -172,9 +185,17 @@ const handlerSroll = (e, id) => {
 
 // 滚动事件
 const onScroll = () => {
-  const element = document.querySelector(`.page-header`);
-  // 获取所有锚点元素
-  const titleNavList = document.querySelectorAll('.article h1,.article h2,.article h3,.article h4,.article h5,.article h6')
+  // const element = document.querySelector(`.page-header`);
+  let element = document.querySelector('.editor-content-view')
+  if (element === undefined || element === null) {
+    element = document.querySelector('.md-editor-preview')
+  }
+  // 获取所有锚点元素md-editor-preview
+  let titleNavList = document.querySelectorAll('.article h1,.article h2,.article h3,.article h4,.article h5,.article h6')
+
+  if (titleNavList.length == 0) {
+    titleNavList = document.querySelectorAll('.md-editor-preview h1,.md-editor-preview h2,.md-editor-preview h3,.md-editor-preview h4,.md-editor-preview h5,.md-editor-preview h6')
+  }
   // 计算所有锚点元素的 offsetTop + 头部的高度
   const offsetTopList = []
   titleNavList.forEach(item => {
@@ -269,8 +290,15 @@ const onScroll = () => {
                   </div>
                   <hr class="mt-4 mb-4 mr-2 ml-2" />
                 </div>
+
                 <!-- 文章内容 -->
-                <div v-if="content" class="editor-content-view" v-html="content.content">
+                <div v-if="content && content.editType === 'md'">
+                  <MdPreview v-if="content" :modelValue="content.content" />
+                  <MdCatalog :scrollElement="scrollElement" />
+                </div>
+                <div v-if="content && content.editType === 'basic'">
+                  <div class="editor-content-view" v-html="content.content">
+                  </div>
                 </div>
                 <div v-if="content" class="flex justify-center items-center">
                   <button @click="isPayOpen = true"
@@ -350,7 +378,7 @@ const onScroll = () => {
                   'border-base-300': colorMode.value === 'light',
                 }">
                   <!-- 锚点目录 -->
-                  <div  class="docs-aside rounded ">
+                  <div class="docs-aside rounded ">
                     <span class="aside-title">目录</span>
                     <div class="aside-body w-full">
                       <ul class="aside-article-catalog">

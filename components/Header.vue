@@ -56,15 +56,18 @@ const handleEnter = () => {
     // 跳转到带参数的路由
     router.push({ path: '/', query: { searchValue: value } });
   }
+  inputValue.value = "";
 };
 </script>
 
 <template>
+  
   <div class="navbar  h-14 bg-base-100 border border-base-300 fixed top-0 left-0 right-0 z-50 font-bold text-base-content"
     :class="{
       'bg-base-300': colorMode.value === 'dark',
       'bg-base-100': colorMode.value === 'light',
     }">
+    
     <div class="navbar-start">
       <div class="dropdown">
         <label tabindex="0" class="btn btn-ghost lg:hidden" @click="toggleDropdown">
@@ -151,25 +154,27 @@ const handleEnter = () => {
             }}</NuxtLink>
         </li>
       </ul>
+
     </div>
 
-    <div class="navbar-end gap-4">
+    <div class="navbar-end gap-4 ">
       <div class="form-control">
         <input v-model="inputValue" @keydown.enter="handleEnter" type="text" placeholder="搜索"
           class="input input-bordered w-24 md:w-auto " />
       </div>
-      <select class="select select-sm focus:outline-0 text-center pl-0 " v-model="selectedLocale" @change="changeLocale">
+      <select class="select select-sm focus:outline-0 text-center pl-0 hidden md:block" v-model="selectedLocale" @change="changeLocale">
         <option v-for="lang of languages" :value="lang.key" :key="lang.key">
           {{ lang.name }}
         </option>
       </select>
-      <select class="select select-sm focus:outline-0 text-center pl-0" v-model="colorMode.preference">
+      <select class="select select-sm focus:outline-0 text-center pl-0 hidden md:block" v-model="colorMode.preference">
         <option v-for="theme of themes" :value="theme.key" :key="theme.key"
           :selected="theme.key === colorMode.preference">
           {{ theme.name }}
         </option>
       </select>
     </div>
+    
   </div>
 </template>
 

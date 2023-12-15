@@ -300,7 +300,7 @@ const onScroll = () => {
                   <div class="editor-content-view" v-html="content.content">
                   </div>
                 </div>
-                <div v-if="content" class="flex justify-center items-center">
+                <div v-if="content" class="flex justify-center items-center mt-4">
                   <button @click="isPayOpen = true"
                     class="bg-blue-500 text-white font-bold py-2 px-4 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue active:bg-blue-800">
                     赞赏

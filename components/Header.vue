@@ -159,8 +159,8 @@ const handleEnter = () => {
 
     <div class="navbar-end gap-4 ">
       <div class="form-control">
-        <input v-model="inputValue" @keydown.enter="handleEnter" type="text" placeholder="搜索"
-          class="input input-bordered w-24 md:w-auto " />
+        <input v-model="inputValue" @keydown.enter="handleEnter"  type="text" placeholder="搜索"
+          class="input input-bordered w-24 md:w-auto input-sm " />
       </div>
       <select class="select select-sm focus:outline-0 text-center pl-0 hidden md:block" v-model="selectedLocale" @change="changeLocale">
         <option v-for="lang of languages" :value="lang.key" :key="lang.key">

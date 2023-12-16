@@ -2,7 +2,7 @@
  * @Author: freedom 957420317@qq.com
  * @Date: 2023-12-06 20:41:55
  * @LastEditors: freedom 957420317@qq.com
- * @LastEditTime: 2023-12-15 07:54:18
+ * @LastEditTime: 2023-12-16 12:03:26
  * @FilePath: \blog_before_vue3_nuxt\components\Build.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -30,7 +30,7 @@ let type = "技术";
 let list = ref([]);
 let isOpen = ref(false);
 let isPayOpen = ref(false);
-
+let loadingStatus = true;
 // 获取文章id
 if (route.query.id) {
   id = route.query.id
@@ -72,6 +72,7 @@ const getTblContent = async (id) => {
       { name: "author", content: `${userName.value}` }
     ],
   })
+  loadingStatus = false
 }
 
 // 获取用户名称
@@ -94,15 +95,17 @@ onMounted(async () => {
   window.addEventListener('scroll', onScroll)
   getList();
   window.scrollTo({
-    top: 0,
+    top: 10,
     behavior: 'smooth' // 如果要平滑滚动，请添加这个选项
   });
+
 })
 onUpdated(() => {
   // 代码高亮
   Prism.highlightAll(); //修改内容后重新渲染
   initArt()
 });
+
 
 onUnmounted(() => {
   window.removeEventListener('scroll', onScroll)
@@ -217,9 +220,13 @@ const onScroll = () => {
 
 </script>
 <template>
-  <div class="w-full mx-auto mt-20 mb-20 font-sans">
+  <div v-if="!content && loadingStatus" class="w-full mx-auto pt-20 h-screen flex items-center justify-center">
+    <span class="loading loading-spinner text-info loading-lg"></span>
+  </div>
+
+  <div v-if="content" class="w-full mx-auto">
     <!-- 第一层div占屏幕宽度的80% -->
-    <div class="w-full">
+    <div class="w-full pt-20 mb-20">
       <!-- 第二层4个div每行一个div -->
       <div class="flex flex-col">
         <div class="w-full">
@@ -231,10 +238,10 @@ const onScroll = () => {
             </div>
             <!-- 第一行 第二列 -->
             <div class="w-full sm:w-1/6 md:w-1/6 lg:w-1/6 xl:w-1/6 hidden md:block">
-              <div v-if="menus && menus.length > 0 && content" class="border border-base-300">
-                <ul class="bg-base-100 p-2 rounded" :class="{
-                  'bg-base-300': colorMode.value === 'dark',
-                  'bg-base-100': colorMode.value === 'light',
+              <div v-if="menus && menus.length > 0 && content" class="">
+                <ul class="bg-base-100 p-8 rounded-md shadow-lg" :class="{
+                  'bg-black text-white': colorMode.value === 'dark',
+                  'bg-white': colorMode.value === 'light',
                 }">
                   <li v-if="content" v-for="(item, index) in menus" class="mb-4">
                     <h3 class="mb-2 border-b border-base-300 pb-2">
@@ -254,10 +261,10 @@ const onScroll = () => {
               </div>
             </div>
             <!-- 第一行 第三列 -->
-            <div class="w-full sm:w-2/5 md:w-2/5 lg:w-2/5 xl:w-2/5 bg-base-100 pl-4 pr-4 pb-2">
-              <div v-if="content" class="border rounded border-base-300" :class="{
-                'bg-base-300': colorMode.value === 'dark',
-                'bg-base-100': colorMode.value === 'light',
+            <div class="w-full sm:w-2/5 md:w-2/5 lg:w-2/5 xl:w-2/5  pl-4 pr-4 pb-2">
+              <div v-if="content" class="rounded-md shadow-lg p-0 md:p-8" :class="{
+                'bg-black text-white': colorMode.value === 'dark',
+                'bg-white': colorMode.value === 'light',
               }">
                 <!-- 文章标题 -->
                 <NuxtLink :to="url">
@@ -293,7 +300,10 @@ const onScroll = () => {
 
                 <!-- 文章内容 -->
                 <div v-if="content && content.editType === 'md'">
-                  <MdPreview v-if="content" :modelValue="content.content" />
+                  <MdPreview v-if="content" :modelValue="content.content" :theme="{
+                    'dark': colorMode.value === 'dark',
+                    'light': colorMode.value === 'light',
+                  }" />
                   <MdCatalog :scrollElement="scrollElement" />
                 </div>
                 <div v-if="content && content.editType === 'basic'">
@@ -314,8 +324,8 @@ const onScroll = () => {
                 <hr v-if="content" class="mt-4 mb-4 ml-2 mr-2" />
                 <!-- 文章作者 文章链接 版权声明 -->
                 <div v-if="content" class=" card  rounded-box border border-base-200 space-y-2 p-6 ml-2 mr-2 mb-4" :class="{
-                  'bg-base-300': colorMode.value === 'dark',
-                  'bg-base-100': colorMode.value === 'light',
+                  'bg-black text-white': colorMode.value === 'dark',
+                  'bg-white': colorMode.value === 'light',
                 }">
                   <p>
                     <Icon name="ep:user" size="20" class="mr-2" />文章作者: {{ userName }}
@@ -336,11 +346,12 @@ const onScroll = () => {
                     {{ item }}
                   </div>
                 </div>
+
                 <!-- 文章翻页 -->
                 <div class="grid gap-8 sm:grid-cols-2 mt-4 mb-4 ml-2 mr-2">
                   <NuxtLink v-if="back && back.ID > 0" target="_self"
                     :to="localePath({ name: 'maintance', query: { id: back.ID } })"
-                    class="p-4 border   rounded-md transition-all hover:text-blue-500" :class="{
+                    class="p-8 border   rounded-md transition-all hover:text-blue-500" :class="{
                       'border-base-100': colorMode.value === 'dark',
                       'border-base-300': colorMode.value === 'light',
                     }">
@@ -353,7 +364,7 @@ const onScroll = () => {
                   </NuxtLink>
                   <NuxtLink v-if="after && after.ID > 0" target="_self"
                     :to="localePath({ name: 'maintance', query: { id: after.ID } })"
-                    class="p-4 border   rounded-md transition-all hover:text-blue-500" :class="{
+                    class="p-8 border   rounded-md transition-all hover:text-blue-500" :class="{
                       'border-base-100': colorMode.value === 'dark',
                       'border-base-300': colorMode.value === 'light',
                     }">
@@ -370,10 +381,10 @@ const onScroll = () => {
             <!-- 第一行 第四列 -->
             <div class="w-full sm:w-1/6 md:w-1/6 lg:w-1/6 xl:w-1/6 hidden md:block">
               <div class="" :class="{
-                'bg-base-300': colorMode.value === 'dark',
-                'bg-base-100': colorMode.value === 'light',
+                'bg-black text-white': colorMode.value === 'dark',
+                'bg-white': colorMode.value === 'light',
               }">
-                <div v-if="docMenu.length > 0" class=" border" :class="{
+                <div v-if="docMenu.length > 0" class="rounded-md shadow-lg p-8" :class="{
                   'border-base-100': colorMode.value === 'dark',
                   'border-base-300': colorMode.value === 'light',
                 }">
@@ -392,16 +403,17 @@ const onScroll = () => {
                 </div>
               </div>
               <!-- 关于作者-->
-              <div v-if="content" class="max-w-md mx-auto  rounded-md shadow-md text-center" :class="{
-                'bg-base-300': colorMode.value === 'dark',
-                'bg-base-100': colorMode.value === 'light',
+              <div v-if="content" class="max-w-md mx-auto  rounded-md shadow-md text-center p-8" :class="{
+                'bg-black text-white': colorMode.value === 'dark',
+                'bg-white': colorMode.value === 'light',
                 'mt-4': docMenu.length > 0,
               }">
-                <img src="/images/logo.png" alt="一码界" class=" h-16 pt-4 mb-2 mx-auto">
-                <p class=" mb-2 mx-auto">
+                <img :src="colorMode.value === 'dark' ? '/images/logo-white.png' : '/images/logo.png'" alt="一码界"
+                  class=" h-20 w-20 mb-2 mx-auto">
+                <p class="mt-2 mb-2 mx-auto">
                   一码一世界，一叶一菩提。
                 </p>
-                <div class="grid grid-cols-2">
+                <div class="grid grid-cols-2 mt-4">
                   <div class="flex items-center">
                     <!-- 微信公众号 -->
                     <a @click="isOpen = true" class="mx-auto" href="#" title="关注微信公众号">
@@ -510,14 +522,19 @@ const onScroll = () => {
             <div class="w-full sm:w-1/6 md:w-1/6 lg:w-1/6 xl:w-1/6 hidden md:block">
             </div>
             <!-- 第二行 第三列 -->
-            <div class="w-full sm:w-2/5 md:w-2/5 lg:w-2/5 xl:w-2/5 bg-base-100 pl-4 pr-4 pb-2">
-              <div class="flex flex-wrap justify-center gap-x-8 gap-y-8 mb-10">
-                <!--猜你喜欢 -->
+            <div class="w-full sm:w-2/5 md:w-2/5 lg:w-2/5 xl:w-2/5 pl-4 pr-4 pb-2">
+              <div v-if="list.length > 0" class="font-bold text-left p-2 md:p-6 rounded-md shadow-lg" :class="{
+                'bg-black text-white': colorMode.value === 'dark',
+                'bg-white': colorMode.value === 'light',
+              }">推荐文章</div>
+              <div class="flex flex-wrap justify-center gap-x-2 gap-y-2  md:gap-x-8 md:gap-y-8 mt-2 mb-2">
+
+                <!--推荐博文 -->
                 <div v-for="(item) in list">
-                  <div class="card card-compact bg-base-100 shadow-lg top-5 border border-base-300"
-                    style="height: 22rem; width:19rem" :class="{
-                      'bg-base-300': colorMode.value === 'dark',
-                      'bg-base-100': colorMode.value === 'light',
+                  <div class="card card-compact  shadow-lg p-1 border border-base-300" style="height: 22rem; width:19rem"
+                    :class="{
+                      'bg-black text-white': colorMode.value === 'dark',
+                      'bg-white': colorMode.value === 'light',
                     }">
                     <div class="mx-auto">
                       <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type } })"><img
@@ -578,8 +595,14 @@ const onScroll = () => {
 
             </div>
             <!-- 第三行 第三列 -->
-            <div class="w-full sm:w-2/5 md:w-2/5 lg:w-2/5 xl:w-2/5 bg-base-100 pl-4 pr-4 pb-2">
-
+            <div class="w-full sm:w-2/5 md:w-2/5 lg:w-2/5 xl:w-2/5 pl-4 pr-4 pb-2">
+              <!-- 只在客户端运行时加载组件 -->
+              <client-only>
+                <Artalk v-if="content" class=" relative overflow-hidden p-6 rounded-md shadow-lg" :class="{
+                  'bg-black text-white': colorMode.value === 'dark',
+                  'bg-white': colorMode.value === 'light',
+                }"></Artalk>
+              </client-only>
             </div>
             <!-- 第三行 第四列 -->
             <div class="w-full sm:w-1/6 md:w-1/6 lg:w-1/6 xl:w-1/6 hidden md:block">
@@ -596,7 +619,7 @@ const onScroll = () => {
   </div>
 </template>
 
-<style>
+<style scoped>
 /* 右边锚点侧边栏样式 */
 /* 标题样式 */
 .docs-aside {

@@ -61,21 +61,20 @@ const handleEnter = () => {
 </script>
 
 <template>
-  
-  <div class="navbar  h-14 bg-base-100 border border-base-300 fixed top-0 left-0 right-0 z-50 font-bold text-base-content"
+  <div class="navbar  h-14  p-2 md:p-6 rounded-md shadow-lg fixed top-0 left-0 right-0 z-50 font-bold text-base-content"
     :class="{
-      'bg-base-300': colorMode.value === 'dark',
-      'bg-base-100': colorMode.value === 'light',
+      ' bg-gray-950 text-white': colorMode.value === 'dark',
+      'bg-white': colorMode.value === 'light',
     }">
-    
+
     <div class="navbar-start">
       <div class="dropdown">
         <label tabindex="0" class="btn btn-ghost lg:hidden" @click="toggleDropdown">
           <Icon name="ep:menu" size="26" color="black" />
         </label>
         <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow rounded-box w-52" :class="{
-          'bg-base-300': colorMode.value === 'dark',
-          'bg-base-100': colorMode.value === 'light',
+          'bg-gray-950 text-white': colorMode.value === 'dark',
+          'bg-white': colorMode.value === 'light',
         }" v-show="isDropdownOpen" @click="closeDropdown">
           <li>
             <NuxtLink :to="localePath({ name: 'index', query: { type: '技术' } })"
@@ -114,7 +113,8 @@ const handleEnter = () => {
         </ul>
       </div>
       <a class="btn btn-ghost normal-case sm:text lg:text-xl  hover:bg-transparent" href="http://www.1majie.com">
-        <img src="/images/logo.png" class=" w-20 h-10" alt="一码界">
+        <img class="w-14 h-14" :src="colorMode.value === 'dark' ? '/images/logo-white.png' : '/images/logo.png'"
+          alt="一码界" >
       </a>
     </div>
     <div class="navbar-center hidden lg:flex">
@@ -159,10 +159,11 @@ const handleEnter = () => {
 
     <div class="navbar-end gap-4 ">
       <div class="form-control">
-        <input v-model="inputValue" @keydown.enter="handleEnter"  type="text" placeholder="搜索"
+        <input v-model="inputValue" @keydown.enter="handleEnter" type="text" placeholder="搜索"
           class="input input-bordered w-24 md:w-auto input-sm " />
       </div>
-      <select class="select select-sm focus:outline-0 text-center pl-0 hidden md:block" v-model="selectedLocale" @change="changeLocale">
+      <select class="select select-sm focus:outline-0 text-center pl-0 hidden md:block" v-model="selectedLocale"
+        @change="changeLocale">
         <option v-for="lang of languages" :value="lang.key" :key="lang.key">
           {{ lang.name }}
         </option>
@@ -174,7 +175,7 @@ const handleEnter = () => {
         </option>
       </select>
     </div>
-    
+
   </div>
 </template>
 

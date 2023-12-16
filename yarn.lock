@@ -2332,6 +2332,11 @@ abbrev@1:
   resolved "https://registry.npmmirror.com/abbrev/-/abbrev-1.1.1.tgz"
   integrity sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==
 
+abortcontroller-polyfill@^1.7.5:
+  version "1.7.5"
+  resolved "https://registry.npmmirror.com/abortcontroller-polyfill/-/abortcontroller-polyfill-1.7.5.tgz"
+  integrity sha512-JMJ5soJWP18htbbxJjG7bG6yuI6pRhgJ0scHHTfkUjf6wjP912xZWvM+A4sJK3gqd9E8fcPbDnOefbA9Th/FIQ==
+
 accepts@^1.3.5:
   version "1.3.8"
   resolved "https://registry.npmjs.org/accepts/-/accepts-1.3.8.tgz"
@@ -2498,6 +2503,21 @@ argparse@^2.0.1:
   version "2.0.1"
   resolved "https://registry.npmjs.org/argparse/-/argparse-2.0.1.tgz"
   integrity sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==
+
+artalk@^2.6.4:
+  version "2.6.4"
+  resolved "https://registry.npmmirror.com/artalk/-/artalk-2.6.4.tgz"
+  integrity sha512-26mnU1gL7aoM2g5i0AkgPgwoQ7+xvbkqbs9xs+ZFdT6BMeyC1lpMVIPLLui7VIRtJnJAq6sUQxMb4Lq6F2AVZA==
+  dependencies:
+    abortcontroller-polyfill "^1.7.5"
+    hanabi "^0.4.0"
+    insane "^2.6.2"
+    marked "^7.0.4"
+
+assignment@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npmmirror.com/assignment/-/assignment-2.0.0.tgz"
+  integrity sha512-naMULXjtgCs9SVUEtyvJNt68aF18em7/W+dhbR59kbz9cXWPEvUkCun2tqlgqRPSqZaKPpqLc5ZnwL8jVmJRvw==
 
 ast-kit@^0.11.2:
   version "0.11.2"
@@ -2946,6 +2966,11 @@ commander@^8.0.0:
   version "8.3.0"
   resolved "https://registry.npmmirror.com/commander/-/commander-8.3.0.tgz"
   integrity sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==
+
+comment-regex@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.npmmirror.com/comment-regex/-/comment-regex-1.0.1.tgz"
+  integrity sha512-IWlN//Yfby92tOIje7J18HkNmWRR7JESA/BK8W7wqY/akITpU5B0JQWnbTjCfdChSrDNb0DrdA9jfAxiiBXyiQ==
 
 commondir@^1.0.1:
   version "1.0.1"
@@ -4076,6 +4101,13 @@ h3@^1.8.1, h3@^1.8.2, h3@^1.9.0:
     uncrypto "^0.1.3"
     unenv "^1.7.4"
 
+hanabi@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.npmmirror.com/hanabi/-/hanabi-0.4.0.tgz"
+  integrity sha512-ixJH94fwmmVzUSdxl7TMkVZJmsq4d2JKrxedpM5V1V+91iVHL0q6NnJi4xiDahK6Vo00xT17H8H6b4F6RVbsOg==
+  dependencies:
+    comment-regex "^1.0.0"
+
 has-flag@^3.0.0:
   version "3.0.0"
   resolved "https://registry.npmjs.org/has-flag/-/has-flag-3.0.0.tgz"
@@ -4114,6 +4146,11 @@ hasown@^2.0.0:
   integrity sha512-vUptKVTpIJhcczKBbgnS+RtcuYMB8+oNzPK2/Hp3hanz8JmpATdmmgLgSaadVREkDm+e2giHwY3ZRkyjSIDDFA==
   dependencies:
     function-bind "^1.1.2"
+
+he@0.5.0:
+  version "0.5.0"
+  resolved "https://registry.npmmirror.com/he/-/he-0.5.0.tgz"
+  integrity sha512-DoufbNNOFzwRPy8uecq+j+VCPQ+JyDelHTmSgygrA5TsR8Cbw4Qcir5sGtWiusB4BdT89nmlaVDhSJOqC/33vw==
 
 hookable@^5.5.3:
   version "5.5.3"
@@ -4327,6 +4364,14 @@ ini@4.1.1:
   version "4.1.1"
   resolved "https://registry.npmmirror.com/ini/-/ini-4.1.1.tgz"
   integrity sha512-QQnnxNyfvmHFIsj7gkPcYymR8Jdw/o7mp5ZFihxn6h8Ci6fh3Dx4E1gPjpQEpIuPo9XVNY/ZUwh4BPMjGyL01g==
+
+insane@^2.6.2:
+  version "2.6.2"
+  resolved "https://registry.npmmirror.com/insane/-/insane-2.6.2.tgz"
+  integrity sha512-BqEL1CJsjJi+/C/zKZxv31zs3r6zkLH5Nz1WMFb7UBX2KHY2yXDpbFTSEmNHzomBbGDysIfkTX55A0mQZ2CQiw==
+  dependencies:
+    assignment "2.0.0"
+    he "0.5.0"
 
 ioredis@^5.3.2:
   version "5.3.2"
@@ -4939,6 +4984,11 @@ markdown-it@*, markdown-it@^13.0.1:
     linkify-it "^4.0.1"
     mdurl "^1.0.1"
     uc.micro "^1.0.5"
+
+marked@^7.0.4:
+  version "7.0.5"
+  resolved "https://registry.npmmirror.com/marked/-/marked-7.0.5.tgz"
+  integrity sha512-lwNAFTfXgqpt/XvK17a/8wY9/q6fcSPZT1aP6QW0u74VwaJF/Z9KbRcX23sWE4tODM+AolJNcUtErTkgOeFP/Q==
 
 md-editor-v3@^4.9.0:
   version "4.9.0"

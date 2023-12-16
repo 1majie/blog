@@ -2,7 +2,7 @@
  * @Author: freedom 957420317@qq.com
  * @Date: 2023-12-06 20:41:55
  * @LastEditors: freedom 957420317@qq.com
- * @LastEditTime: 2023-12-13 07:42:14
+ * @LastEditTime: 2023-12-16 11:57:24
  * @FilePath: \blog_before_vue3_nuxt\components\List.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -19,19 +19,17 @@ let pageSize = 2;
 let type = "技术";
 let searchValue = '';
 const route = useRoute()
+let loadingStatus = true;
 if (route.query) {
   type = route.query.type || ''
   page = route.query.page || 1
   searchValue = route.query.searchValue || ''
-  if (searchValue) {
-    type = ''
-  }
 }
 const getList = async (currentPage, type, searchValue) => {
   // 防止客户端执行时，直接返回null
   await nextTick()
   page = currentPage
-  let { data: count } = await useFetch(baseUrl + '/base/getTblContentList?page=' + page + '&pageSize=' + pageSize + '&type=' + type + '&title=' + searchValue)
+  let { data: count } = await useFetch(baseUrl + '/base/getTblContentList?page=' + page + '&pageSize=' + pageSize + '&type=' + type + '&keyword=' + searchValue)
   list.value = count.value.data.result.list;
   beforePage = count.value.data.beforePage;
   afterPage = count.value.data.nextPage;
@@ -42,6 +40,7 @@ const getList = async (currentPage, type, searchValue) => {
       { name: "keywords", content: `${type}` },
     ],
   })
+  loadingStatus = false
 }
 getList(page, type, searchValue);
 watch(
@@ -65,13 +64,16 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="mt-16 mb-24">
+  <div v-if="list.length <= 0 && loadingStatus" class="w-full mx-auto pt-20 h-screen flex items-center justify-center">
+    <span class="loading loading-spinner text-info loading-lg"></span>
+  </div>
+  <div class="mt-16 mb-24 h-screen">
     <div class="flex flex-wrap justify-center gap-x-8 gap-y-8">
       <div v-for="(item) in list">
-        <div class="card card-compact bg-base-100 shadow-lg top-5 border border-base-300"
+        <div class="card card-compact bg-base-100 shadow-lg p-4 top-4 border border-base-300"
           style="height: 24rem; width:26rem" :class="{
-            'bg-base-300': colorMode.value === 'dark',
-            'bg-base-100': colorMode.value === 'light',
+            'bg-black text-white': colorMode.value === 'dark',
+            'bg-white': colorMode.value === 'light',
           }">
           <div class="mx-auto">
             <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type } })"><img
@@ -111,21 +113,21 @@ onMounted(() => {
       </div>
 
     </div>
-    <div v-if="list.length > 0" class="flex flex-wrap justify-center gap-x-8 gap-y-8 mt-8">
+    <div v-if="list.length > 0" class="flex flex-wrap justify-center gap-x-8 gap-y-8 mt-8 mb-8">
       <div class="join grid grid-cols-2">
         <NuxtLink v-if="beforePage >= 1" target="_self"
           :to="localePath({ name: 'index', query: { 'type': type, 'page': beforePage } })"
           class="py-2 px-4 rounded-md transition-all hover:text-blue-500" :class="{
-            'bg-base-300': colorMode.value === 'dark',
-            'bg-base-100': colorMode.value === 'light',
+            'bg-black text-white': colorMode.value === 'dark',
+            'bg-white': colorMode.value === 'light',
           }">
           {{ $t("page.before") }}
         </NuxtLink>
         <NuxtLink v-if="afterPage >= 2" target="_self"
           :to="localePath({ name: 'index', query: { 'type': type, 'page': afterPage } })"
           class="py-2 ml-4 px-4 rounded-md transition-all hover:text-blue-500" :class="{
-            'bg-base-300  ': colorMode.value === 'dark',
-            'bg-base-100': colorMode.value === 'light',
+            'bg-black text-white ': colorMode.value === 'dark',
+            'bg-white': colorMode.value === 'light',
           }">
           {{ $t("page.next") }}
         </NuxtLink>

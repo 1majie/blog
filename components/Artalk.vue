@@ -1,10 +1,18 @@
+<!--
+ * @Author: freedom 957420317@qq.com
+ * @Date: 2023-12-16 06:34:44
+ * @LastEditors: freedom 957420317@qq.com
+ * @LastEditTime: 2023-12-17 13:16:06
+ * @FilePath: \blog_before_vue3_nuxt\components\Artalk.vue
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
 <template>
     <div id="Comments"></div>
 </template>
   
 <script setup>
 import "artalk/dist/Artalk.css";
-import Artalk from "artalk";
+import Artalk from "artalk";;
 let colorMode = ref({});
 
 onMounted(() => {
@@ -15,7 +23,7 @@ onMounted(() => {
             el: "#Comments",
             pageKey: `${window.location.href}`, // 页面链接
             pageTitle: pageTitle, // 页面标题
-            server: "http://192.168.100.23:8080", // 后端地址
+            server: "http://120.46.209.137/artalk", // 后端地址
             site: "一码界",
             darkMode: colorMode.value === 'dark', // 自动主题
             useBackendConf: false,// 关闭前端中心

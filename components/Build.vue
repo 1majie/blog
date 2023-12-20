@@ -2,7 +2,7 @@
  * @Author: freedom 957420317@qq.com
  * @Date: 2023-12-06 20:41:55
  * @LastEditors: freedom 957420317@qq.com
- * @LastEditTime: 2023-12-16 12:03:26
+ * @LastEditTime: 2023-12-16 15:44:54
  * @FilePath: \blog_before_vue3_nuxt\components\Build.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -37,7 +37,7 @@ if (route.query.id) {
   type = route.query.type
 }
 
-// 猜你喜欢
+// 推荐博文
 const getList = async () => {
   // 防止客户端执行时，直接返回null
   await nextTick()
@@ -83,10 +83,11 @@ const getUserName = async (id) => {
   userName.value = username.value.data.userName;
 }
 
-getTblContent(id);
+
 getList();
 onMounted(async () => {
   await nextTick()
+  getTblContent(id);
   setView(id);
   colorMode.value = useColorMode();
   Prism.highlightAll();
@@ -98,7 +99,7 @@ onMounted(async () => {
     top: 10,
     behavior: 'smooth' // 如果要平滑滚动，请添加这个选项
   });
-
+  
 })
 onUpdated(() => {
   // 代码高亮

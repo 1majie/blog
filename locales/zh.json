@@ -1,12 +1,11 @@
 {
   "title": "一码界",
   "menu": {
-    "home": "技术",
-    "download": "下载",
-    "software": "软件",
-    "vps":"vps",
-    "proxy": "机场",
-    "money": "搞钱"
+    "home": "编程记录",
+    "operate": "运维建站",
+    "security": "网络安全",
+    "tool":"工具软件",
+    "essays": "随笔杂谈"
   },
   "theme": {
     "light": "亮色",

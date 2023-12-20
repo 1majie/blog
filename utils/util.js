@@ -3,7 +3,7 @@ export default {
   getBaseUrl() {
     if (process.server) {
       // 这里是服务端代码
-      return "http://localhost:8888";
+      return "http://120.46.209.137/api";
     } else {
       return "/api"
     }

@@ -2505,9 +2505,9 @@ argparse@^2.0.1:
   integrity sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==
 
 artalk@^2.6.4:
-  version "2.6.4"
-  resolved "https://registry.npmmirror.com/artalk/-/artalk-2.6.4.tgz"
-  integrity sha512-26mnU1gL7aoM2g5i0AkgPgwoQ7+xvbkqbs9xs+ZFdT6BMeyC1lpMVIPLLui7VIRtJnJAq6sUQxMb4Lq6F2AVZA==
+  version "2.7.1"
+  resolved "https://registry.npmmirror.com/artalk/-/artalk-2.7.1.tgz"
+  integrity sha512-ncTOI99l2ixNyoQ1q/t/FfdtqyUK57zhLDUAwDLU27OBjM1GSPOC3Ww8XMgOdXh0igqVkZHev9oR5WiUQCGCww==
   dependencies:
     abortcontroller-polyfill "^1.7.5"
     hanabi "^0.4.0"

@@ -1,12 +1,11 @@
 {
   "title": "One code World",
   "menu": {
-    "home": "technology",
-    "download": "download",
-    "software": "software",
-    "vps":"vps",
-    "proxy": "proxy",
-    "money": "money"
+    "home": "Programming record",
+    "operate": "O&M",
+    "security": "cyber security",
+    "tool":"tool software",
+    "essays": "Essays"
   },
   "theme": {
     "light": "light",

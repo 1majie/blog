@@ -2,7 +2,7 @@
  * @Author: freedom 957420317@qq.com
  * @Date: 2023-12-12 06:54:19
  * @LastEditors: freedom 957420317@qq.com
- * @LastEditTime: 2023-12-12 22:00:30
+ * @LastEditTime: 2023-12-18 06:50:53
  * @FilePath: \blog_before_vue3_nuxt\server\api\urls.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -10,7 +10,7 @@
 export default defineSitemapEventHandler(async () => {
   // 通过后台地址获取所有页面
   const pages = await $fetch<{ pages: { slug: string; title: string } }>(
-    "http://localhost:8888/base/getTblContentAll"
+    "http://120.46.209.137/api/base/getTblContentAll"
   );
   // 遍历添加地址到sitemap 目前不支持英文，配置转换后，？后的内容消失了
   let arr = [];

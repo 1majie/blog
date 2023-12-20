@@ -77,37 +77,31 @@ const handleEnter = () => {
           'bg-white': colorMode.value === 'light',
         }" v-show="isDropdownOpen" @click="closeDropdown">
           <li>
-            <NuxtLink :to="localePath({ name: 'index', query: { type: '技术' } })"
+            <NuxtLink :to="localePath({ name: 'index', query: { type: '编程记录' } })"
               class="hover:text-blue-500  hover:bg-transparent" @click="closeDropdown">{{
                 $t("menu.home") }}</NuxtLink>
           </li>
           <li>
-            <NuxtLink :to="localePath({ name: 'index', query: { type: '下载' } })"
+            <NuxtLink :to="localePath({ name: 'index', query: { type: '运维建站' } })"
               class="hover:text-blue-500  hover:bg-transparent">{{
-                $t("menu.download") }}</NuxtLink>
+                $t("menu.operate") }}</NuxtLink>
           </li>
           <li>
-            <NuxtLink :to="localePath({ name: 'index', query: { type: '软件' } })"
+            <NuxtLink :to="localePath({ name: 'index', query: { type: '网络安全' } })"
               class="hover:text-blue-500  hover:bg-transparent">{{
-                $t("menu.software")
+                $t("menu.security")
               }}</NuxtLink>
           </li>
           <li>
-            <NuxtLink :to="localePath({ name: 'index', query: { type: 'VPS' } })"
+            <NuxtLink :to="localePath({ name: 'index', query: { type: '工具软件' } })"
               class="hover:text-blue-500  hover:bg-transparent">{{
-                $t("menu.vps")
+                $t("menu.tool")
               }}</NuxtLink>
           </li>
           <li>
-            <NuxtLink :to="localePath({ name: 'index', query: { type: '机场' } })"
+            <NuxtLink :to="localePath({ name: 'index', query: { type: '随笔杂谈' } })"
               class="hover:text-blue-500  hover:bg-transparent">{{
-                $t("menu.proxy")
-              }}</NuxtLink>
-          </li>
-          <li>
-            <NuxtLink :to="localePath({ name: 'index', query: { type: '搞钱' } })"
-              class="hover:text-blue-500  hover:bg-transparent">{{
-                $t("menu.money")
+                $t("menu.essays")
               }}</NuxtLink>
           </li>
         </ul>
@@ -120,39 +114,33 @@ const handleEnter = () => {
     <div class="navbar-center hidden lg:flex">
       <ul class="menu menu-horizontal gap-6 px-1 text-lg">
         <li>
-          <NuxtLink :to="localePath({ name: 'index', query: { type: '技术' } })"
-            class="hover:text-blue-500  hover:bg-transparent">{{
-              $t("menu.home") }}</NuxtLink>
-        </li>
-        <li>
-          <NuxtLink :to="localePath({ name: 'index', query: { type: '下载' } })"
-            class="hover:text-blue-500  hover:bg-transparent">{{
-              $t("menu.download") }}</NuxtLink>
-        </li>
-        <li>
-          <NuxtLink :to="localePath({ name: 'index', query: { type: '软件' } })"
-            class="hover:text-blue-500  hover:bg-transparent">{{
-              $t("menu.software")
-            }}</NuxtLink>
-        </li>
-        <li>
-          <NuxtLink :to="localePath({ name: 'index', query: { type: 'VPS' } })"
-            class="hover:text-blue-500  hover:bg-transparent">{{
-              $t("menu.vps")
-            }}</NuxtLink>
-        </li>
-        <li>
-          <NuxtLink :to="localePath({ name: 'index', query: { type: '机场' } })"
-            class="hover:text-blue-500  hover:bg-transparent">{{
-              $t("menu.proxy")
-            }}</NuxtLink>
-        </li>
-        <li>
-          <NuxtLink :to="localePath({ name: 'index', query: { type: '搞钱' } })"
-            class="hover:text-blue-500  hover:bg-transparent">{{
-              $t("menu.money")
-            }}</NuxtLink>
-        </li>
+            <NuxtLink :to="localePath({ name: 'index', query: { type: '编程记录' } })"
+              class="hover:text-blue-500  hover:bg-transparent" @click="closeDropdown">{{
+                $t("menu.home") }}</NuxtLink>
+          </li>
+          <li>
+            <NuxtLink :to="localePath({ name: 'index', query: { type: '运维建站' } })"
+              class="hover:text-blue-500  hover:bg-transparent">{{
+                $t("menu.operate") }}</NuxtLink>
+          </li>
+          <li>
+            <NuxtLink :to="localePath({ name: 'index', query: { type: '网络安全' } })"
+              class="hover:text-blue-500  hover:bg-transparent">{{
+                $t("menu.security")
+              }}</NuxtLink>
+          </li>
+          <li>
+            <NuxtLink :to="localePath({ name: 'index', query: { type: '工具软件' } })"
+              class="hover:text-blue-500  hover:bg-transparent">{{
+                $t("menu.tool")
+              }}</NuxtLink>
+          </li>
+          <li>
+            <NuxtLink :to="localePath({ name: 'index', query: { type: '随笔杂谈' } })"
+              class="hover:text-blue-500  hover:bg-transparent">{{
+                $t("menu.essays")
+              }}</NuxtLink>
+          </li>
       </ul>
 
     </div>

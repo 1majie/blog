@@ -70,7 +70,7 @@ export default defineNuxtConfig({
   },
   app: {
     head: {
-      titleTemplate: "%s-一码界博客", // 用模板，具体参考官网
+      titleTemplate: "%s-一码界", // 用模板，具体参考官网
       meta: [
         { charset: "utf-8" },
         { name: "renderer", content: "webkit", "data-n-head": true },

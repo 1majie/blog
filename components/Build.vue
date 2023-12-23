@@ -2,7 +2,7 @@
  * @Author: freedom 957420317@qq.com
  * @Date: 2023-12-06 20:41:55
  * @LastEditors: freedom 957420317@qq.com
- * @LastEditTime: 2023-12-16 15:44:54
+ * @LastEditTime: 2023-12-23 11:31:16
  * @FilePath: \blog_before_vue3_nuxt\components\Build.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -26,7 +26,7 @@ let url = ref("")
 let userName = ref("");
 let docMenu = ref([]);
 let active = ref(0);
-let type = "技术";
+let type = "";
 let list = ref([]);
 let isOpen = ref(false);
 let isPayOpen = ref(false);
@@ -41,7 +41,7 @@ if (route.query.id) {
 const getList = async () => {
   // 防止客户端执行时，直接返回null
   await nextTick()
-  let { data: count } = await useFetch(baseUrl + '/base/getTblContentList?page=1&pageSize=10&type=' + type)
+  let { data: count } = await useFetch(baseUrl + '/base/getTblContentList?page=1&pageSize=9&type=' + type)
   list.value = count.value.data.result.list;
 }
 
@@ -62,15 +62,16 @@ const getTblContent = async (id) => {
   back.value = count.value.data.back;
   after.value = count.value.data.after;
   await getUserName(count.value.data.retblContent.authorId);
+
   //根据文章内容动态设置 seo 标签内容
   useHead({
-    title: `${content.value.title}`,
+    title: `${content.value.title}` + "_" + `${content.value.type}` + "_",
     meta: [
       { property: 'og:title', content: `${content.value.title}` },
       { name: "keywords", content: `${content.value.tagsView}` },
       { name: "description", content: `${content.value.summary}` },
       { name: "author", content: `${userName.value}` }
-    ],
+    ]
   })
   loadingStatus = false
 }
@@ -99,11 +100,13 @@ onMounted(async () => {
     top: 10,
     behavior: 'smooth' // 如果要平滑滚动，请添加这个选项
   });
-  
+
 })
 onUpdated(() => {
   // 代码高亮
-  Prism.highlightAll(); //修改内容后重新渲染
+  if (content.value.editType != "md") {
+    Prism.highlightAll(); //修改内容后重新渲染
+  }
   initArt()
 });
 
@@ -180,11 +183,11 @@ const handlerSroll = (e, id) => {
       behavior: "auto",
     });
     setTimeout(() => {
-      window.scrollBy(0, -element.offsetHeight)
+      window.scrollTo(0, -element.offsetHeight)
     }, 100)
     return
   }
-  window.scrollBy(0, -element.offsetHeight)
+  window.scrollTo(0, -element.offsetHeight)
 }
 
 // 滚动事件
@@ -227,7 +230,7 @@ const onScroll = () => {
 
   <div v-if="content" class="w-full mx-auto">
     <!-- 第一层div占屏幕宽度的80% -->
-    <div class="w-full pt-20 mb-20">
+    <div class="w-full pt-4 mb-20">
       <!-- 第二层4个div每行一个div -->
       <div class="flex flex-col">
         <div class="w-full">
@@ -318,8 +321,8 @@ const onScroll = () => {
                   </button>
                   <div v-show="isPayOpen" @click.away="isPayOpen = false"
                     class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
-                    <img src="/images/alipay.jpg" alt="支付宝支付" class="object-contain h-1/3">
-                    <img src="/images/weipay.jpg" alt="微信支付" class="object-contain h-1/3 ">
+                    <img src="/images/alipay.jpg" alt="支付宝支付" class="object-contain" style="width: 35rem;height: 35rem;">
+                    <img src="/images/weipay.jpg" alt="微信支付" class="object-contain" style="width: 35rem;height: 35rem;">
                   </div>
                 </div>
                 <hr v-if="content" class="mt-4 mb-4 ml-2 mr-2" />
@@ -396,7 +399,7 @@ const onScroll = () => {
                       <ul class="aside-article-catalog">
                         <li v-for="(item, index) in docMenu" :key="item.id" :class="`level_${item.level}`">
                           <a :href="'#' + item.id" :class="{ active: active === index }"
-                            @click="handlerSroll($event, item.id, index)">{{ item.text }}</a>
+                            >{{ item.text }}</a>
                         </li>
                       </ul>
                     </div>
@@ -543,32 +546,27 @@ const onScroll = () => {
                           :alt="item.title" />
                       </NuxtLink>
                     </div>
-                    <div class="mt-2 ml-2">
+                    <div class="mt-2 h-16 ml-2">
                       <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type } })">
-                        <h3 class="font-bold hover:text-blue-500" :title="item.title">
+                        <h3 class="font-bold line-clamp-2 text-base hover:text-blue-500" :title="item.title">
                           {{ item.title }}
                         </h3>
                       </NuxtLink>
                     </div>
-                    <div class="ml-2 h-20 mb-2">
+                    <div class="ml-2 h-16 mb-2">
                       <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type } })"><span
-                          class="line-clamp-2 hover:text-blue-500" :title="item.summary">{{ item.summary }}
+                          class="line-clamp-3 text-sm hover:text-blue-500" :title="item.summary">{{ item.summary }}
                         </span></NuxtLink>
                     </div>
                     <div class="flex items-center mb-2 ml-2 ">
                       <div class="flex items-center ">
                         <Icon name="ic:baseline-event-available" class="font-thin" color="black" />
-                        <span class="ml-1 font-thin">{{ utils.dataFliter(item.createTime) }}</span>
+                        <span class="ml-1 font-thin text-sm">{{ utils.dataFliter(item.createTime) }}</span>
                       </div>
 
-                      <div class="flex items-center flex-grow">
+                      <div class="flex items-center">
                         <Icon name="ic:baseline-preview" class="font-thin ml-4" color="black" />
-                        <span class="ml-1 font-thin">{{ item.viewNum }}</span>
-                      </div>
-
-                      <div class="flex items-center ml-auto mr-2">
-                        <Icon name="ic:baseline-article" class="font-thin" color="black" />
-                        <span class="ml-1 font-thin">{{ item.type }}</span>
+                        <span class="ml-1 font-thin text-sm">{{ item.viewNum }}</span>
                       </div>
                     </div>
                   </div>
@@ -597,12 +595,13 @@ const onScroll = () => {
             </div>
             <!-- 第三行 第三列 -->
             <div class="w-full sm:w-2/5 md:w-2/5 lg:w-2/5 xl:w-2/5 pl-4 pr-4 pb-2">
-              <!-- 只在客户端运行时加载组件 -->
+              <!-- 只在客户端运行时加载组件评论组件 -->
               <client-only>
-                <Artalk v-if="content" class=" relative overflow-hidden p-6 rounded-md shadow-lg" :class="{
-                  'bg-black text-white': colorMode.value === 'dark',
-                  'bg-white': colorMode.value === 'light',
-                }"></Artalk>
+                <Artalk v-if="content && content.allowComment == '允许'"
+                  class=" relative overflow-hidden p-6 rounded-md shadow-lg" :class="{
+                    'bg-black text-white': colorMode.value === 'dark',
+                    'bg-white': colorMode.value === 'light',
+                  }"></Artalk>
               </client-only>
             </div>
             <!-- 第三行 第四列 -->

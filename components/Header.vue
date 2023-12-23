@@ -61,7 +61,7 @@ const handleEnter = () => {
 </script>
 
 <template>
-  <div class="navbar  h-14  p-2 md:p-6 rounded-md shadow-lg fixed top-0 left-0 right-0 z-50 font-bold text-base-content"
+  <div class="navbar  h-14  p-2 md:p-6 rounded-md shadow-lg  top-0 left-0 right-0 font-bold text-base-content"
     :class="{
       ' bg-gray-950 text-white': colorMode.value === 'dark',
       'bg-white': colorMode.value === 'light',

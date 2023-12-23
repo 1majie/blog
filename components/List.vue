@@ -2,7 +2,7 @@
  * @Author: freedom 957420317@qq.com
  * @Date: 2023-12-06 20:41:55
  * @LastEditors: freedom 957420317@qq.com
- * @LastEditTime: 2023-12-16 15:45:38
+ * @LastEditTime: 2023-12-23 09:21:53
  * @FilePath: \blog_before_vue3_nuxt\components\List.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -16,7 +16,7 @@ let beforePage = 0;
 let afterPage = 1;
 let list = ref([]);
 let pageSize = 15;
-let type = "技术";
+let type = "";
 let searchValue = '';
 const route = useRoute()
 let loadingStatus = true;
@@ -33,13 +33,15 @@ const getList = async (currentPage, type, searchValue) => {
   list.value = count.value.data.result.list;
   beforePage = count.value.data.beforePage;
   afterPage = count.value.data.nextPage;
-  useHead({
-    title: `${type}`,
-    meta: [
-      { property: 'og:title', content: `${type}` },
-      { name: "keywords", content: `${type}` },
-    ],
-  })
+  if (type) {
+    useHead({
+      title: `${type}`+"_",
+      meta: [
+        { property: 'og:title', content: `${type}` },
+        { name: "keywords", content: `${type}` },
+      ],
+    })
+  }
   loadingStatus = false
 }
 getList(page, type, searchValue);
@@ -67,7 +69,7 @@ onMounted(() => {
   <div v-if="list.length <= 0 && loadingStatus" class="w-full mx-auto pt-20 h-screen flex items-center justify-center">
     <span class="loading loading-spinner text-info loading-lg"></span>
   </div>
-  <div class="mt-16 mb-24 h-screen">
+  <div class="mt-4 mb-24 h-screen">
     <div class="flex flex-wrap justify-center gap-x-8 gap-y-8">
       <div v-for="(item) in list">
         <div class="card card-compact bg-base-100 shadow-lg p-4 top-4 border border-base-300"
@@ -80,33 +82,33 @@ onMounted(() => {
                 :src="baseUrl + '/' + item.img" class="aspect-video w-full object-cover rounded" :alt="item.title" />
             </NuxtLink>
           </div>
-          <div class="mt-2 ml-2">
+          <div class="mt-2 h-16 ml-2">
             <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type } })">
-              <h3 class="font-bold hover:text-blue-500" :title="item.title">
+              <h3 class="line-clamp-2 font-bold hover:text-blue-500" :title="item.title">
                 {{ item.title }}
               </h3>
             </NuxtLink>
           </div>
-          <div class="ml-2 h-20 mb-2 mt-2">
+          <div class="ml-2 h-16 mb-2 mt-2">
             <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type } })"><span
-                class="line-clamp-2 hover:text-blue-500" :title="item.summary">{{ item.summary }}
+                class="line-clamp-2 hover:text-blue-500 text-sm" :title="item.summary">{{ item.summary }}
               </span></NuxtLink>
           </div>
           <div class="flex items-center mb-2 ml-2 ">
             <!-- 列1的内容 -->
             <div class="flex items-center ">
               <Icon name="ic:baseline-event-available" class="font-thin" color="black" />
-              <span class="ml-1 font-thin">{{ utils.dataFliter(item.createTime) }}</span>
+              <span class="ml-1 font-thin text-sm">{{ utils.dataFliter(item.createTime) }}</span>
             </div>
 
             <div class="flex items-center flex-grow">
               <Icon name="ic:baseline-preview" class="font-thin ml-4" color="black" />
-              <span class="ml-1 font-thin">{{ item.viewNum }}</span>
+              <span class="ml-1 font-thin text-sm">{{ item.viewNum }}</span>
             </div>
 
             <div class="flex items-center ml-auto mr-2">
               <Icon name="ic:baseline-article" class="font-thin" color="black" />
-              <span class="ml-1 font-thin">{{ item.type }}</span>
+              <span class="ml-1 font-thin text-sm">{{ item.type }}</span>
             </div>
           </div>
         </div>

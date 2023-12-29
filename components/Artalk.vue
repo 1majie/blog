@@ -18,13 +18,14 @@ let colorMode = ref({});
 onMounted(() => {
     colorMode.value = useColorMode();
     if (Artalk) {
+        console.log(import.meta.env.VITE_ARTALK_URL);
         const pageTitle = document.title;
         new Artalk({
             el: "#Comments",
             pageKey: `${window.location.href}`, // 页面链接
             pageTitle: pageTitle, // 页面标题
-            server: "http://120.46.209.137/artalk", // 后端地址
-            site: "一码界",
+            server: import.meta.env.VITE_ARTALK_URL, // 后端地址
+            site: import.meta.env.VITE_ARTALK_SITE_TILE,
             darkMode: colorMode.value === 'dark', // 自动主题
             useBackendConf: false,// 关闭前端中心
         });

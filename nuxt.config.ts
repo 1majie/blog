@@ -2,7 +2,7 @@
  * @Author: freedom 957420317@qq.com
  * @Date: 2023-12-06 20:41:55
  * @LastEditors: freedom 957420317@qq.com
- * @LastEditTime: 2023-12-23 09:30:57
+ * @LastEditTime: 2023-12-29 21:44:21
  * @FilePath: \blog_before_vue3_nuxt\nuxt.config.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -42,7 +42,7 @@ export default defineNuxtConfig({
   nitro: {
     devProxy: {
       "/api": {
-        target: "http://localhost:8888",
+        target: import.meta.env.SERVER_URL,
         changeOrigin: true,
       },
     },
@@ -70,24 +70,21 @@ export default defineNuxtConfig({
   },
   app: {
     head: {
-      titleTemplate: "%s一码界_专业技术博客", // 用模板，具体参考官网
+      titleTemplate: import.meta.env.SEO_TITLE, // 用模板，具体参考官网
       meta: [
         { charset: "utf-8" },
         { name: "renderer", content: "webkit", "data-n-head": true },
         { "http-equiv": "X-UA-Compatible", content: "IE=edge,chrome=1" },
-        { name: "keywords", content: "编程记录,网络安全,工具软件,随笔杂谈" },
+        { name: "keywords", content:  import.meta.env.SEO_KEYWORDS},
         {
           name: "description",
           content:
-            "一码界博客，集前端、后端、数据库、运维、网络安全、产品开发技术于一身。实用指南、工具推荐，助力你的技术成长。",
+            import.meta.env.SEO_DESCRIPTION,
         },
       ],
       link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
     },
   }, 
-  site: {
-    url: 'https://www.1majie.com',
-  },
   sitemap: {
     exclude: [
       // 添加其他要排除的页面

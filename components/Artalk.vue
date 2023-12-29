@@ -2,7 +2,7 @@
  * @Author: freedom 957420317@qq.com
  * @Date: 2023-12-16 06:34:44
  * @LastEditors: freedom 957420317@qq.com
- * @LastEditTime: 2023-12-17 13:16:06
+ * @LastEditTime: 2023-12-30 07:41:44
  * @FilePath: \blog_before_vue3_nuxt\components\Artalk.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -18,7 +18,6 @@ let colorMode = ref({});
 onMounted(() => {
     colorMode.value = useColorMode();
     if (Artalk) {
-        console.log(import.meta.env.VITE_ARTALK_URL);
         const pageTitle = document.title;
         new Artalk({
             el: "#Comments",

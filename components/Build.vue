@@ -2,7 +2,7 @@
  * @Author: freedom 957420317@qq.com
  * @Date: 2023-12-06 20:41:55
  * @LastEditors: freedom 957420317@qq.com
- * @LastEditTime: 2023-12-23 11:31:16
+ * @LastEditTime: 2023-12-30 07:36:26
  * @FilePath: \blog_before_vue3_nuxt\components\Build.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -31,6 +31,9 @@ let list = ref([]);
 let isOpen = ref(false);
 let isPayOpen = ref(false);
 let loadingStatus = true;
+let payEnable = import.meta.env.VITE_PAY_ENABLE
+let personEnable = import.meta.env.VITE_PERSONAL_ENABLE
+let mdTheme = 'light'
 // 获取文章id
 if (route.query.id) {
   id = route.query.id
@@ -91,6 +94,12 @@ onMounted(async () => {
   getTblContent(id);
   setView(id);
   colorMode.value = useColorMode();
+  if (colorMode.value == 'light') {
+    mdTheme = 'light'
+  }
+  if (colorMode.value == 'dark') {
+    mdTheme = 'dark'
+  }
   Prism.highlightAll();
   // 获取文章地址
   url = window.location.href;
@@ -304,17 +313,14 @@ const onScroll = () => {
 
                 <!-- 文章内容 -->
                 <div v-if="content && content.editType === 'md'">
-                  <MdPreview v-if="content" :modelValue="content.content" :theme="{
-                    'dark': colorMode.value === 'dark',
-                    'light': colorMode.value === 'light',
-                  }" />
+                  <MdPreview v-if="content" :modelValue="content.content" :theme="mdTheme" />
                   <MdCatalog :scrollElement="scrollElement" />
                 </div>
                 <div v-if="content && content.editType === 'basic'">
                   <div class="editor-content-view" v-html="content.content">
                   </div>
                 </div>
-                <div v-if="content" class="flex justify-center items-center mt-4">
+                <div v-if="content && payEnable == 'true'" class="flex justify-center items-center mt-4">
                   <button @click="isPayOpen = true"
                     class="bg-blue-500 text-white font-bold py-2 px-4 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue active:bg-blue-800">
                     赞赏
@@ -398,8 +404,7 @@ const onScroll = () => {
                     <div class="aside-body w-full">
                       <ul class="aside-article-catalog">
                         <li v-for="(item, index) in docMenu" :key="item.id" :class="`level_${item.level}`">
-                          <a :href="'#' + item.id" :class="{ active: active === index }"
-                            >{{ item.text }}</a>
+                          <a :href="'#' + item.id" :class="{ active: active === index }">{{ item.text }}</a>
                         </li>
                       </ul>
                     </div>
@@ -407,11 +412,12 @@ const onScroll = () => {
                 </div>
               </div>
               <!-- 关于作者-->
-              <div v-if="content" class="max-w-md mx-auto  rounded-md shadow-md text-center p-8" :class="{
-                'bg-black text-white': colorMode.value === 'dark',
-                'bg-white': colorMode.value === 'light',
-                'mt-4': docMenu.length > 0,
-              }">
+              <div v-if="content && personEnable == 'true'" class="max-w-md mx-auto  rounded-md shadow-md text-center p-8"
+                :class="{
+                  'bg-black text-white': colorMode.value === 'dark',
+                  'bg-white': colorMode.value === 'light',
+                  'mt-4': docMenu.length > 0,
+                }">
                 <img :src="colorMode.value === 'dark' ? '/images/logo-white.png' : '/images/logo.png'" alt="一码界"
                   class=" h-20 w-20 mb-2 mx-auto">
                 <p class="mt-2 mb-2 mx-auto">

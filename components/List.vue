@@ -30,6 +30,9 @@ const getList = async (currentPage, type, searchValue) => {
   await nextTick()
   page = currentPage
   let { data: count } = await useFetch(baseUrl + '/base/getTblContentList?page=' + page + '&pageSize=' + pageSize + '&type=' + type + '&keyword=' + searchValue)
+  if (count ==undefined) {
+    return
+  }
   list.value = count.value.data.result.list;
   beforePage = count.value.data.beforePage;
   afterPage = count.value.data.nextPage;

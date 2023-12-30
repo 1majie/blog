@@ -72,7 +72,10 @@ onMounted(() => {
   <div v-if="list.length <= 0 && loadingStatus" class="w-full mx-auto pt-20 h-screen flex items-center justify-center">
     <span class="loading loading-spinner text-info loading-lg"></span>
   </div>
-  <div class="mt-4 mb-24 h-screen">
+  <div v-if="list.length <=0" class="w-full mx-auto  h-screen flex items-center justify-center">
+    <span class="text-2xl text-center text-blue-400">暂无数据</span>
+  </div>
+  <div v-if="list.length > 0 " class="mt-4 mb-24 ">
     <div class="flex flex-wrap justify-center gap-x-8 gap-y-8">
       <div v-for="(item) in list">
         <div class="card card-compact bg-base-100 shadow-lg p-4 top-4 border border-base-300"
@@ -138,7 +141,5 @@ onMounted(() => {
         </NuxtLink>
       </div>
     </div>
-
-
   </div>
 </template>

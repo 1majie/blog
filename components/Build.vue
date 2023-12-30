@@ -246,7 +246,7 @@ const onScroll = () => {
           <!-- 第三层：5个div，每个div占一列宽度为10% 10% 60% 10% 10% -->
           <div class="flex flex-wrap">
             <!-- 第一行 第一列 -->
-            <div class="w-full sm:w-1/6 md:w-1/6 lg:w-1/6 xl:w-1/6">
+            <div class="w-full sm:w-1/12 md:w-1/12 lg:w-1/12 xl:w-1/12">
               <!-- 未更改的部分 -->
             </div>
             <!-- 第一行 第二列 -->
@@ -274,7 +274,7 @@ const onScroll = () => {
               </div>
             </div>
             <!-- 第一行 第三列 -->
-            <div class="w-full sm:w-2/5 md:w-2/5 lg:w-2/5 xl:w-2/5  pl-4 pr-4 pb-2">
+            <div class="w-full sm:w-3/6 md:w-3/6 lg:w-3/6 xl:w-3/6  pl-4 pr-4 pb-2">
               <div v-if="content" class="rounded-md shadow-lg p-0 md:p-8" :class="{
                 'bg-black text-white': colorMode.value === 'dark',
                 'bg-white': colorMode.value === 'light',
@@ -518,21 +518,21 @@ const onScroll = () => {
               </div>
             </div>
             <!-- 第一行 第五列 -->
-            <div class="w-full sm:w-1/6 md:w-1/6 lg:w-1/6 xl:w-1/6">
+            <div class="w-full sm:w-1/12 md:w-1/12 lg:w-1/12 xl:w-1/12">
             </div>
           </div>
 
           <!-- 第二行 -->
           <div class="flex flex-wrap">
             <!-- 第二行 第一列 -->
-            <div class="w-full sm:w-1/6 md:w-1/6 lg:w-1/6 xl:w-1/6">
+            <div class="w-full sm:w-1/12 md:w-1/12 lg:w-1/12 xl:w-1/12">
               <!-- 未更改的部分 -->
             </div>
             <!-- 第二行 第二列 -->
             <div class="w-full sm:w-1/6 md:w-1/6 lg:w-1/6 xl:w-1/6 hidden md:block">
             </div>
             <!-- 第二行 第三列 -->
-            <div class="w-full sm:w-2/5 md:w-2/5 lg:w-2/5 xl:w-2/5 pl-4 pr-4 pb-2">
+            <div class="w-full sm:w-3/6 md:w-3/6 lg:w-3/6 xl:w-3/6 pl-4 pr-4 pb-2">
               <div v-if="list.length > 0" class="font-bold text-left p-2 md:p-6 rounded-md shadow-lg" :class="{
                 'bg-black text-white': colorMode.value === 'dark',
                 'bg-white': colorMode.value === 'light',
@@ -584,7 +584,7 @@ const onScroll = () => {
 
             </div>
             <!-- 第二行 第五列 -->
-            <div class="w-full sm:w-1/6 md:w-1/6 lg:w-1/6 xl:w-1/6">
+            <div class="w-full sm:w-1/12 md:w-1/12 lg:w-1/12 xl:w-1/12">
             </div>
 
           </div>
@@ -592,7 +592,7 @@ const onScroll = () => {
           <!-- 第三行 -->
           <div class="flex flex-wrap">
             <!-- 第三行 第一列 -->
-            <div class="w-full sm:w-1/6 md:w-1/6 lg:w-1/6 xl:w-1/6">
+            <div class="w-full sm:w-1/12 md:w-1/12 lg:w-1/12 xl:w-1/12">
               <!-- 未更改的部分 -->
             </div>
             <!-- 第三行 第二列 -->
@@ -600,7 +600,7 @@ const onScroll = () => {
 
             </div>
             <!-- 第三行 第三列 -->
-            <div class="w-full sm:w-2/5 md:w-2/5 lg:w-2/5 xl:w-2/5 pl-4 pr-4 pb-2">
+            <div class="w-full sm:w-3/6 md:w-3/6 lg:w-3/6 xl:w-3/6 pl-4 pr-4 pb-2">
               <!-- 只在客户端运行时加载组件评论组件 -->
               <client-only>
                 <Artalk v-if="content && content.allowComment == '允许'"
@@ -615,7 +615,7 @@ const onScroll = () => {
 
             </div>
             <!-- 第三行 第五列 -->
-            <div class="w-full sm:w-1/6 md:w-1/6 lg:w-1/6 xl:w-1/6">
+            <div class="w-full sm:w-1/12 md:w-1/12 lg:w-1/12 xl:w-1/12">
             </div>
 
           </div>

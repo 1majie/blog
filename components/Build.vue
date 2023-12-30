@@ -541,7 +541,7 @@ const onScroll = () => {
 
                 <!--推荐博文 -->
                 <div v-for="(item) in list">
-                  <div class="card card-compact  shadow-lg p-1 border border-base-300" style="height: 22rem; width:19rem"
+                  <div class="card card-compact  shadow-lg p-1 border border-base-300" style="height: 23rem; width:24rem"
                     :class="{
                       'bg-black text-white': colorMode.value === 'dark',
                       'bg-white': colorMode.value === 'light',

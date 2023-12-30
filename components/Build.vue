@@ -252,19 +252,19 @@ const onScroll = () => {
             <!-- 第一行 第二列 -->
             <div class="w-full sm:w-1/6 md:w-1/6 lg:w-1/6 xl:w-1/6 hidden md:block">
               <div v-if="menus && menus.length > 0 && content" class="">
-                <ul class="bg-base-100 p-8 rounded-md shadow-lg" :class="{
+                <ul class="bg-base-100 p-4 rounded-md shadow-lg" :class="{
                   'bg-black text-white': colorMode.value === 'dark',
                   'bg-white': colorMode.value === 'light',
                 }">
                   <li v-if="content" v-for="(item, index) in menus" class="mb-4">
-                    <h3 class="mb-2 border-b border-base-300 pb-2">
+                    <h4 class="mb-2 border-b border-base-300 pb-2">
                       {{ item.subset }}
-                    </h3>
+                    </h4>
                     <ul>
-                      <li v-for="tblContent in item.tblContents" :key="tblContent.ID" class="mb-1">
+                      <li v-for="tblContent in item.tblContents" :key="tblContent.ID" class="mb-2">
                         <NuxtLink target="_self"
                           :to="localePath({ name: 'maintance', query: { id: tblContent.ID, type: type } })"
-                          class=" ml-4  hover:text-blue-500 ">
+                          class="text-sm hover:text-blue-500 ">
                           {{ tblContent.title }}
                         </NuxtLink>
                       </li>
@@ -394,13 +394,14 @@ const onScroll = () => {
                 'bg-black text-white': colorMode.value === 'dark',
                 'bg-white': colorMode.value === 'light',
               }">
-                <div v-if="docMenu.length > 0" class="rounded-md shadow-lg p-8" :class="{
+                <div v-if="docMenu.length > 0" class="rounded-md shadow-lg p-4" :class="{
                   'border-base-100': colorMode.value === 'dark',
                   'border-base-300': colorMode.value === 'light',
                 }">
                   <!-- 锚点目录 -->
                   <div class="docs-aside rounded ">
                     <span class="aside-title">目录</span>
+                    <hr>
                     <div class="aside-body w-full">
                       <ul class="aside-article-catalog">
                         <li v-for="(item, index) in docMenu" :key="item.id" :class="`level_${item.level}`">

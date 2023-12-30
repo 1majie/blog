@@ -2,7 +2,7 @@
  * @Author: freedom 957420317@qq.com
  * @Date: 2023-12-06 20:41:55
  * @LastEditors: freedom 957420317@qq.com
- * @LastEditTime: 2023-12-23 09:21:53
+ * @LastEditTime: 2023-12-31 06:16:25
  * @FilePath: \blog_before_vue3_nuxt\components\List.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -30,7 +30,7 @@ const getList = async (currentPage, type, searchValue) => {
   await nextTick()
   page = currentPage
   let { data: count } = await useFetch(baseUrl + '/base/getTblContentList?page=' + page + '&pageSize=' + pageSize + '&type=' + type + '&keyword=' + searchValue)
-  if (count ==undefined) {
+  if (count.value == undefined || count.value == null) {
     return
   }
   list.value = count.value.data.result.list;
@@ -38,7 +38,7 @@ const getList = async (currentPage, type, searchValue) => {
   afterPage = count.value.data.nextPage;
   if (type) {
     useHead({
-      title: `${type}`+"_",
+      title: `${type}` + "_",
       meta: [
         { property: 'og:title', content: `${type}` },
         { name: "keywords", content: `${type}` },
@@ -72,10 +72,10 @@ onMounted(() => {
   <div v-if="list.length <= 0 && loadingStatus" class="w-full mx-auto pt-20 h-screen flex items-center justify-center">
     <span class="loading loading-spinner text-info loading-lg"></span>
   </div>
-  <div v-if="list.length <=0" class="w-full mx-auto  h-screen flex items-center justify-center">
+  <div v-if="list.length <= 0" class="w-full mx-auto  h-screen flex items-center justify-center">
     <span class="text-2xl text-center text-blue-400">暂无数据</span>
   </div>
-  <div v-if="list.length > 0 " class="mt-4 mb-24 ">
+  <div v-if="list.length > 0" class="mt-4 mb-24 ">
     <div class="flex flex-wrap justify-center gap-x-8 gap-y-8">
       <div v-for="(item) in list">
         <div class="card card-compact bg-base-100 shadow-lg p-4 top-4 border border-base-300"

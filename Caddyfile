@@ -1,0 +1,50 @@
+www.1majie.com {
+	encode zstd gzip
+	tls 957420317@qq.com
+	log {
+		level DEBUG
+		output stdout
+	}
+	handle_path /web* {
+		redir /web /web/ 308
+		root * /dst
+		try_files /dst/index.html
+		file_server
+	}
+
+	route /* {
+		reverse_proxy 192.168.0.44:3000
+		header Host {host}
+		header X-Real-IP {remote}
+		header X-Forwarded-For {remote}
+		header X-Forwarded-Proto {scheme}
+	}
+
+	route /maintenance* {
+		uri strip_prefix /maintenance
+		reverse_proxy 192.168.0.44:3000
+		header Host {host}
+		header X-Real-IP {remote}
+		header X-Forwarded-For {remote}
+		header X-Forwarded-Proto {scheme}
+	}
+
+	route /artalk* {
+		redir /artalk /artalk/ 308
+		uri strip_prefix /artalk
+		reverse_proxy 192.168.0.44:8080
+		header Host {host}
+		header X-Real-IP {remote}
+		header X-Forwarded-For {remote}
+		header X-Forwarded-Proto {scheme}
+	}
+
+	route /api* {
+		uri strip_prefix /api
+		reverse_proxy 192.168.0.44:8888
+		header Host {host}
+		header X-Real-IP {remote}
+		header X-Forwarded-For {remote}
+		header X-Forwarded-Proto {scheme}
+	}
+}

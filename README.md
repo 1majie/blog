@@ -1,3 +1,11 @@
+<!--
+ * @Author: freedom 957420317@qq.com
+ * @Date: 2023-12-06 20:41:55
+ * @LastEditors: freedom 957420317@qq.com
+ * @LastEditTime: 2023-12-31 14:16:29
+ * @FilePath: \blog_before_vue3_nuxt\README.md
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
 ## 一码界博客系统
 作为一名程序员对博客系统不可控，心里不爽，再造轮子一枚。本博客包括前端和后端管理系统，前端系统为nuxt3，后台管理系统基于[gin-vue-admin](https://www.gin-vue-admin.com/)开发。后端数据库设计参考[Typecho博客设计](https://docs.typecho.org/database)
 ### gitee
@@ -67,3 +75,10 @@
 ![](https://www.1majie.com/api/uploads/file/7788f29195a2edf255b072ee25029997_20231231102609.png)
 ##### 文章内容
 ![](https://www.1majie.com/api/uploads/file/905100afa8889d8584ad793d20552c6f_20231231102617.png)
+
+### 安装过程
+
+1. [前期准备](https://www.1majie.com/maintance?id=32&type=)
+2. [管理端部署](https://www.1majie.com/maintance?id=33&type=)
+3. [前端部署](https://www.1majie.com/maintance?id=34&type=)
+4. [其他配置](https://www.1majie.com/maintance?id=35&type=)

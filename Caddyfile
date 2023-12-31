@@ -1,17 +1,20 @@
-www.1majie.com {
+www.xxx.com {
 	encode zstd gzip
-	tls 957420317@qq.com
+	# 开启ssl
+	tls xxx@qq.com
 	log {
 		level DEBUG
 		output stdout
 	}
-	handle_path /web* {
-		redir /web /web/ 308
+	# 博客管理web端代理，路径根据自己的配置
+	handle_path /mg* {
+		redir /mg /mg/ 308
 		root * /dst
 		try_files /dst/index.html
 		file_server
 	}
 
+	# 配置博客前端代理
 	route /* {
 		reverse_proxy 192.168.0.44:3000
 		header Host {host}
@@ -20,6 +23,7 @@ www.1majie.com {
 		header X-Forwarded-Proto {scheme}
 	}
 
+	# 解决路径转发问题
 	route /maintenance* {
 		uri strip_prefix /maintenance
 		reverse_proxy 192.168.0.44:3000
@@ -29,9 +33,10 @@ www.1majie.com {
 		header X-Forwarded-Proto {scheme}
 	}
 
-	route /artalk* {
-		redir /artalk /artalk/ 308
-		uri strip_prefix /artalk
+	# 代理评论系统
+	route /pinglun* {
+		redir /pinglun /pinglun/ 308
+		uri strip_prefix /pinglun
 		reverse_proxy 192.168.0.44:8080
 		header Host {host}
 		header X-Real-IP {remote}
@@ -39,8 +44,9 @@ www.1majie.com {
 		header X-Forwarded-Proto {scheme}
 	}
 
-	route /api* {
-		uri strip_prefix /api
+	# 代理博客后端服务
+	route /jiekou* {
+		uri strip_prefix /jiekou
 		reverse_proxy 192.168.0.44:8888
 		header Host {host}
 		header X-Real-IP {remote}

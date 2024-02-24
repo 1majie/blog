@@ -25,6 +25,7 @@ export default defineNuxtConfig({
     "nuxt-icon", //https://icones.js.org/ icon图标地址
     "@nuxtjs/color-mode",
     "nuxt-simple-sitemap",
+    "nuxt-gtag"
   ],
   colorMode: {
     preference: "system", // default value of $colorMode.preference
@@ -100,5 +101,8 @@ export default defineNuxtConfig({
     sources: [
       '/api/urls',
     ]
+  },
+  gtag: {
+    id: 'G-2LYM8JVFXN'
   }
 });

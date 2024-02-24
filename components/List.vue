@@ -2,7 +2,7 @@
  * @Author: freedom 957420317@qq.com
  * @Date: 2023-12-06 20:41:55
  * @LastEditors: freedom 957420317@qq.com
- * @LastEditTime: 2023-12-31 06:16:25
+ * @LastEditTime: 2024-02-24 20:50:44
  * @FilePath: \blog_before_vue3_nuxt\components\List.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -13,7 +13,7 @@ const baseUrl = utils.getBaseUrl();
 let colorMode = ref({});
 let page = 1;
 let beforePage = 0;
-let afterPage = 1;
+let afterPage = 2;
 let list = ref([]);
 let pageSize = 15;
 let type = "";
@@ -75,7 +75,7 @@ onMounted(() => {
   <div v-if="list.length <= 0" class="w-full mx-auto  h-screen flex items-center justify-center">
     <span class="text-2xl text-center text-blue-400">暂无数据</span>
   </div>
-  <div v-if="list.length > 0" class="mt-4 mb-24 ">
+  <div v-if="list.length > 0" class="mt-4 mb-24">
     <div class="flex flex-wrap justify-center gap-x-8 gap-y-8">
       <div v-for="(item) in list">
         <div class="card card-compact bg-base-100 shadow-lg p-4 top-4 border border-base-300"
@@ -84,19 +84,19 @@ onMounted(() => {
             'bg-white': colorMode.value === 'light',
           }">
           <div class="mx-auto">
-            <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type } })"><img
+            <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: item.type } })"><img
                 :src="baseUrl + '/' + item.img" class="aspect-video w-full object-cover rounded" :alt="item.title" />
             </NuxtLink>
           </div>
           <div class="mt-2 h-16 ml-2">
-            <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type } })">
+            <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type:  item.type } })">
               <h3 class="line-clamp-2 font-bold hover:text-blue-500" :title="item.title">
                 {{ item.title }}
               </h3>
             </NuxtLink>
           </div>
           <div class="ml-2 h-16 mb-2 mt-2">
-            <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type: type } })"><span
+            <NuxtLink :to="localePath({ name: 'maintance', query: { id: item.ID, type:  item.type } })"><span
                 class="line-clamp-2 hover:text-blue-500 text-sm" :title="item.summary">{{ item.summary }}
               </span></NuxtLink>
           </div>
